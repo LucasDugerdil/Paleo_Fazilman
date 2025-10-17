@@ -1,0 +1,208 @@
+"","Index","Nom","Label","Type","AP.NAP","Cortege","Subcortege"
+"1","0","Lycopodium","Lycopodium","Standard","NaN","NaN",NA
+"2","1","Cyperaceae","Cyperaceae","Pollen","NAP","Herb",NA
+"3","2","Poaceae","Poaceae","Pollen","NAP","Herb",NA
+"4","3","Artemisia","Artemisia spp.","Pollen","NAP","Herb",NA
+"5","4","Chenopodiaceae","Amaranthaceae","Pollen","NAP","Herb",NA
+"6","50","Pinus haplo","Pinus haplo","Pollen","AP","Tree",NA
+"7","51","Pinus diplo","Pinus diplo","Pollen","AP","Tree",NA
+"8","52","Pinus indet","Pinus indet","Pollen","AP","Tree",NA
+"9","53","Abies","Abies","Pollen","AP","Tree",NA
+"10","54","Picea","Picea","Pollen","AP","Tree",NA
+"11","55","Larix","Larix","Pollen","AP","Tree",NA
+"12","56","Picea halves","Picea halves","Pollen","AP","Tree",NA
+"13","57","Pinus diplo halves","Pinus diplo halves","Pollen","AP","Tree",NA
+"14","58","Cupressus","Cupressus","Pollen","AP","Tree",NA
+"15","59","Juniperus","Juniperus spp.","Pollen","AP","Tree",NA
+"16","80","Hyppophae","Hyppophae","Pollen","AP","Tree",NA
+"17","81","Elaeagnus","Elaeagnus","Pollen","AP","Tree",NA
+"18","82","Ephedra distachya","Ephedra distachya-type","Pollen","NAP","Shrub",NA
+"19","83","Ephedra fragilis","Ephedra fragilis-type","Pollen","NAP","Shrub",NA
+"20","84","Tamarix","Tamarix","Pollen","NAP","Shrub",NA
+"21","85","Nitraria","Nitraria","Pollen","NAP","Shrub",NA
+"22","86","Calligonum t","Calligonum-type","Pollen","NAP","Shrub",NA
+"23","87","Tribulus","Tribulus spp.","Pollen","NAP","Herb",NA
+"24","88","Paliuris","Paliuris","Pollen","NAP","Herb",NA
+"25","89","Berberis","Berberis","Pollen","NAP","Herb",NA
+"26","601","Quercus semper","Quercus semper","Pollen","AP","Tree",NA
+"27","602","Quercus decidue","Quercus decidue","Pollen","AP","Tree",NA
+"28","603","Fagus","Fagus","Pollen","AP","Tree",NA
+"29","604","Carpinus orientalis","Carpinus orientalis","Pollen","AP","Tree",NA
+"30","606","Carpinus betulus","Carpinus betulus","Pollen","AP","Tree",NA
+"31","607","Betula","Betula spp.","Pollen","AP","Tree",NA
+"32","608","Ilex","Ilex","Pollen","AP","Tree",NA
+"33","609","Ulmus","Ulmus-type","Pollen","AP","Tree",NA
+"34","610","Alnus","Alnus spp.","Pollen","AP","Tree",NA
+"35","611","Acer","Acer","Pollen","AP","Tree",NA
+"36","612","Juglans regia","Juglans regia","Pollen","AP","Tree",NA
+"37","612","Juglans","Juglans regia","Pollen","AP","Tree",NA
+"38","613","Rosaceae tree","Rosaceae-typeree","Pollen","AP","Tree",NA
+"39","614","Rubus","Rubus","Pollen","AP","Tree",NA
+"40","615","Fraxinus","Fraxinus spp.","Pollen","AP","Tree",NA
+"41","616","Celtis","Celtis","Pollen","AP","Tree",NA
+"42","617","Vitis","Vitis","Pollen","NAP","Herb",NA
+"43","618","Parrotia persica","Parrotia persica","Pollen","AP","Tree",NA
+"44","619","Zelkova carpinifolia","Zelkova carpinifolia","Pollen","AP","Tree",NA
+"45","620","Tilia","Tilia","Pollen","AP","Tree",NA
+"46","621","Populus","Populus","Pollen","AP","Tree",NA
+"47","622","Punica","Punica","Pollen","AP","Tree",NA
+"48","623","Pistacia","Pistacia","Pollen","AP","Tree",NA
+"49","624","Pterocarya","Pterocarya","Pollen","AP","Tree",NA
+"50","625","Morus","Morus","Pollen","AP","Tree",NA
+"51","626","Ampelopsis","Ampelopsis-type","Pollen","NAP","Herb",NA
+"52","70","Salix","Salix spp.","Pollen","AP","Tree",NA
+"53","71","Corylus","Corylus","Pollen","AP","Tree",NA
+"54","72","Hedera","Hedera-type","Pollen","AP","Tree",NA
+"55","73","Rosaceae shrub","Rosaceae shrub","Pollen","AP","Tree",NA
+"56","74","Ligustrum","Ligustrum","Pollen","AP","Tree",NA
+"57","75","Viburnum","Viburnum","Pollen","AP","Tree",NA
+"58","76","Ribes","Ribes","Pollen","AP","Tree",NA
+"59","77","Ericaceae","Ericaceae","Pollen","AP","Tree",NA
+"60","78","Lonicera","Lonicera spp.","Pollen","AP","Tree",NA
+"61","79","Thymelaceae","Thymelaceae","Pollen","NAP","Herb",NA
+"62","900","Asteroideae","Asteroideae","Pollen","NAP","Herb",NA
+"63","901","Cichorioideae","Cichorioideae","Pollen","NAP","Herb",NA
+"64","902","Cardueae","Cardueae","Pollen","NAP","Herb",NA
+"65","903","Cerealia","Cerealia-type","Pollen","NAP","Herb",NA
+"66","904","Apiaceae","Apiaceae","Pollen","NAP","Herb",NA
+"67","905","Caryophyllaceae","Caryophyllaceae","Pollen","NAP","Herb",NA
+"68","906","Brassicaceae","Brassicaceae","Pollen","NAP","Herb",NA
+"69","907","Lamiaceae","Lamiaceae","Pollen","NAP","Herb",NA
+"70","908","Rubiaceae","Rubiaceae","Pollen","NAP","Herb",NA
+"71","909","Scrophulariaceae","Scrophulariaceae","Pollen","NAP","Herb",NA
+"72","910","Fabaceae","Fabaceae","Pollen","NAP","Herb",NA
+"73","911","Fumariaceae","Fumariaceae","Pollen","NAP","Herb",NA
+"74","912","Liliaceae","Liliaceae","Pollen","NAP","Herb",NA
+"75","913","Rhamnaceae","Rhamnaceae","Pollen","NAP","Herb",NA
+"76","914","Dipsacaceae","Dipsacaceae","Pollen","NAP","Herb",NA
+"77","915","Malvaceae","Malvaceae","Pollen","NAP","Herb",NA
+"78","916","Convolvulus","Convolvulus spp.","Pollen","NAP","Shrub",NA
+"79","918","Geranium","Geranium-type","Pollen","NAP","Herb",NA
+"80","919","Achillea t","Achillea-type","Pollen","NAP","Herb",NA
+"81","920","Aster t","Aster-type","Pollen","NAP","Herb",NA
+"82","921","Centaurea","Centaurea spp.","Pollen","NAP","Herb",NA
+"83","923","Cirsium","Cirsium","Pollen","NAP","Herb",NA
+"84","924","Helianthemum","Helianthemum","Pollen","NAP","Herb",NA
+"85","925","Echinops","Echinops-type","Pollen","NAP","Herb",NA
+"86","926","Senecio t","Senecio-type","Pollen","NAP","Herb",NA
+"87","927","Matricaria t","Matricaria-type","Pollen","NAP","Herb",NA
+"88","928","Carthamus t","Carthamus-type","Pollen","NAP","Herb",NA
+"89","929","Cousinia sp","Cousinia spp.","Pollen","NAP","Herb",NA
+"90","930","Sedum","Sedum","Pollen","NAP","Herb",NA
+"91","931","Allium t","Allium-type","Pollen","NAP","Herb",NA
+"92","932","Hypericum t","Hypericum-type","Pollen","NAP","Herb",NA
+"93","933","Plantago coronopus t","Plantago coronopus-type","Pollen","NAP","Herb",NA
+"94","934","Plantago lanceolata","Plantago lanceolata","Pollen","NAP","Herb",NA
+"95","935","Plantago major","Plantago major","Pollen","NAP","Herb",NA
+"96","936","Plantago alpina t","Plantago alpina-type","Pollen","NAP","Herb",NA
+"97","937","Plantago media","Plantago media","Pollen","NAP","Herb",NA
+"98","938","Rumex","Rumex spp.","Pollen","NAP","Herb",NA
+"99","939","Primula","Primula","Pollen","NAP","Herb",NA
+"100","940","Ranunculaceae","Ranunculaceae","Pollen","NAP","Herb",NA
+"101","941","Thalictrum","Thalictrum","Pollen","NAP","Herb",NA
+"102","942","Valeriana sp","Valeriana spp.","Pollen","NAP","Herb",NA
+"103","943","Potentilla t","Potentilla-type","Pollen","NAP","Herb",NA
+"104","944","Saxifraga","Saxifraga","Pollen","NAP","Herb",NA
+"105","945","Urtica sp","Urtica spp.","Pollen","NAP","Herb",NA
+"106","946","Campanula","Campanula","Pollen","NAP","Herb",NA
+"107","947","Gypsophylla t","Gypsophylla-type","Pollen","NAP","Herb",NA
+"108","948","Gentiana t","Gentiana-type","Pollen","NAP","Herb",NA
+"109","949","Geum t","Geum-type","Pollen","NAP","Herb",NA
+"110","950","Agrimonia t","Agrimonia-type","Pollen","NAP","Herb",NA
+"111","951","Salvia t","Salvia-type","Pollen","NAP","Herb",NA
+"112","952","Sanguisorba t","Sanguisorba-type","Pollen","NAP","Herb",NA
+"113","953","Echium","Echium","Pollen","NAP","Herb",NA
+"114","954","Polygonum t","Polygonum-type","Pollen","NAP","Herb",NA
+"115","955","Epilobium","Epilobium-type","Pollen","NAP","Herb",NA
+"116","956","Solanaceae","Solanaceae","Pollen","NAP","Herb",NA
+"117","957","Phragmites","Phragmites","Pollen","NAP","Herb",NA
+"118","958","Limonium t","Limonium-type","Pollen","NAP","Herb",NA
+"119","959","Heliotropium","Heliotropium","Pollen","NAP","Herb",NA
+"120","960","Peganum harmala","Peganum harmala","Pollen","NAP","Herb",NA
+"121","961","Zygophyllum","Zygophyllum","Pollen","NAP","Herb",NA
+"122","962","Gagea sp","Gagea spp.","Pollen","NAP","Herb",NA
+"123","963","Boraginaceae","Boraginaceae","Pollen","NAP","Herb",NA
+"124","964","Cistanche","Cistanche","Pollen","NAP","Herb",NA
+"125","965","Papaver-Roemeria","Papaver-Roemeria","Pollen","NAP","Herb",NA
+"126","966","Polygala","Polygala","Pollen","NAP","Herb",NA
+"127","967","Pedicularis","Pedicularis","Pollen","NAP","Herb",NA
+"128","968","Strigosella-t","Strigosella-t","Pollen","NAP","Herb",NA
+"129","969","Mentha t","Mentha-type","Pollen","NAP","Herb",NA
+"130","970","Ferula sp","Ferula spp.","Pollen","NAP","Herb",NA
+"131","971","Haloxylon t","Haloxylon-type","Pollen","NAP","Herb",NA
+"132","973","Hypecoum","Hypecoum","Pollen","NAP","Herb",NA
+"133","974","Nonea sp","Nonea spp.","Pollen","NAP","Herb",NA
+"134","975","Eremurus","Eremurus spp.","Pollen","NAP","Herb",NA
+"135","976","Haplophyllum","Haplophyllum spp.","Pollen","NAP","Herb",NA
+"136","977","Swertia","Swertia spp.","Pollen","NAP","Herb",NA
+"137","978","Euphrasia","Euphrasia spp.","Pollen","NAP","Herb",NA
+"138","..3","Pollen indet","Pollen indet","Pollen","NaN","NaN",NA
+"139","A1","Plantago","Plantago spp.","Pollen","NAP","Herb",NA
+"140","A2","Papaver.Roemeria","Papaver.Roemeria","Pollen","NAP","Herb",NA
+"141","A3","Strigosella.t","Strigosella.t","Pollen","NAP","Herb",NA
+"142","Na","AP","AP","Sum","AP","Tree",NA
+"143","Na","NAP","NAP","Sum","NAP","Herb",NA
+"144","Na","Other Trees","Other Trees","Sum","AP","Tree",NA
+"145","Na","Other Herbs","Other Herbs","Sum","NAP","Herb",NA
+"146","0","Other","Other","Sum","Sum","NaN",NA
+"147","0","Other Spores","Other","Sum","Sum","NaN",NA
+"148",NA,"Spore.Influx","Fungal spore influx","Sum","Sum","NaN",NA
+"149","0","Other algue","Other Algals","Sum","Sum","NaN",NA
+"150","0","Erosion_Spore","Erosion markers","Sum","Sum","Erosion markers",NA
+"151","0","Grazzing_Spore","Dung fungal spores","Sum","Sum","Dung fungal spores",NA
+"152","0","Saprophilous_Spore","Saprophytic spores","Sum","Sum","Saprophytic spores",NA
+"153","0","Peat_Spore","Wetland markers","Sum","Sum","Wetland markers",NA
+"154","0","Parasitic_Spore","Parasitic spores","Sum","Sum","Plant pathogens",NA
+"155","82","Ephedra distachia","Ephedra distachya","Pollen","NAP","Shrub",NA
+"156","","Juniperus-like","Juniperus spp.","Pollen","AP","",NA
+"157","A3","Strigosella t","Strigosella.t","Pollen","NAP","Herb",NA
+"158","0","Aridity_Spore","Aridity markers","Sum","Sum","Aridity markers",NA
+"159",".084","Tetraedron minima","Tetraedron cf. minimum","Algue","Algae","Algae",NA
+"160",".085","Tetraedron trilobulatum","Tetraedron cf. trilobulatum","Algue","Algae","Algae",NA
+"161",NA,"Pediastrum sp","Pediastrum spp.","Algue","Algae","Algae",NA
+"162",".01","Botryococcus","Botryococcus braunii","Algue","Algae","Algae",NA
+"163",".04","Spirogyra","Spirogyra spp.","Algue","Algae","Algae",NA
+"164",".03","Zygnema","Zygnema spp.","Algue","Algae","Algae",NA
+"165",".02","Volvocaceae","Volvocaceae undet.","Algue","Algae","Algae",NA
+"166",".081","Mougeotia","Mougeotia spp.","Algue","Algae","Algae",NA
+"167",".07","HdV 66","Penium spp.","Algue","Algae","Algae",NA
+"168","..1","Glomus","Glomus spp.","Spore","Spore","Erosion markers",NA
+"169",".73","Gloeotrichia t","Gloeotrichia-type","Algue","Cyanobacteria","Algae",NA
+"170",".55","Nematode eggs","Nematoda eggs-type","Spore","Spore","Other NPPs",NA
+"171",".40","Microthyrium","Microthyrium-type","Spore","Spore","Saprophytic spores",NA
+"172",".06","Potamogeton","Potamogeton gramineus","Algue","Hydrophilous planta","Hydrophytic vegetation",NA
+"173",".090","Myriophyllum","Myriophyllum spp.","Algue","Hydrophilous planta","Hydrophytic vegetation",NA
+"174",".09","Typha sparganium t","Typha/Sparganium-type","Algue","Hydrophilous planta","Hydrophytic vegetation",NA
+"175",".083","Chironomidae","Chironomidae undet.","Spore","Spore","Wetland markers",NA
+"176",".71","Rotifera","Cephalodella exigua","Spore","Spore","Wetland markers",NA
+"177",".74","Entophlyctis lobata","cf. Entophlyctis lobata","Spore","Spore","Other NPPs",NA
+"178",".24","Tilletia","Tilletia spp.","Spore","Spore","Plant pathogens",NA
+"179",".42","Urocystis","Urocystis spp.","Spore","Spore","Dung fungal spores","High coprophilous"
+"180",".23","Thecaphora","Thecaphora spp.","Spore","Spore","Plant pathogens",NA
+"181",".43","Lycoperdales","Basidiomycota","Spore","Spore","Other NPPs",NA
+"182",".53","Chaetomium","Chaetomium spp.","Spore","Spore","Dung fungal spores","Medium coprophilous"
+"183",".48","Brachysporium","Brachysporium spp.","Spore","Spore","Saprophytic spores","Medium saprophilous"
+"184",".59","Xylariaceae hélicoidale","Xylariaceae undet.","Spore","Spore","Saprophytic spores","High saprophilous"
+"185",".15","Delitschia","Delitschia spp.","Spore","Spore","Dung fungal spores","High coprophilous"
+"186",".12","Arthrinium","Arthrinium spp.","Spore","Spore","Plant pathogens","Medium saprophilous"
+"187",".11","Arnium","Arnium spp.","Spore","Spore","Plant pathogens","High coprophilous"
+"188",".17","Coniochaetaceae","Coniochaetaceae undet.","Spore","Spore","Saprophytic spores","Medium coprophilous"
+"189",".20","Podospora","Podospora spp.","Spore","Spore","Dung fungal spores","High coprophilous"
+"190",".21","Sordaria","Sordaria spp.","Spore","Spore","Dung fungal spores","High coprophilous"
+"191",".14","Cercophora","Cercophora spp.","Spore","Spore","Saprophytic spores","Medium coprophilous"
+"192",".28","Pleospora type","Pleospora-type","Spore","Spore","Dung fungal spores","Medium coprophilous"
+"193","..2","Sporormiella","Sporormiella spp.","Spore","Spore","Dung fungal spores","High coprophilous"
+"194",".70","Curvularia","Curvularia spp.","Spore","Spore","Plant pathogens",NA
+"195",".49","Savoryella","Savoryella cf. lignicola","Spore","Spore","Saprophytic spores",NA
+"196",".44","Nigrospora","Nigrospora spp.","Spore","Spore","Plant pathogens",NA
+"197",".27","Phaeosphaeria","Phaeosphaeria spp.","Spore","Spore","Plant pathogens",NA
+"198",".22","Valsaria","Valsaria spp.","Spore","Spore","Saprophytic spores",NA
+"199",".72","Xylomyces chlamydosporus","Xylomyces chlamydosporus","Spore","Spore","Wetland markers",NA
+"200",".47","Meliola","Meliola niessleana","Spore","Spore","Plant pathogens",NA
+"201",".69","HdV-200","HdV-200","Spore","Spore","Aridity markers",NA
+"202",".52","Persiciospora","Persiciospora spp.","Spore","Spore","Other NPPs",NA
+"203",".45","Coniochaeta cf lignaria","Coniochaeta cf. lignaria","Spore","Spore","Saprophytic spores","Medium coprophilous"
+"204",".10","Alternaria","Alternaria spp.","Spore","Spore","Ubiquitous spores",NA
+"205",".62","Ulmus-spore t","HdV-722","Spore","Spore","Wetland markers",NA
+"206",".66","Bullinularia","Bullinularia spp.","Spore","Spore","Wetland markers",NA
+"207",".63","Inonotus t","Inonotus spp.","Spore","Spore","Plant pathogens",NA

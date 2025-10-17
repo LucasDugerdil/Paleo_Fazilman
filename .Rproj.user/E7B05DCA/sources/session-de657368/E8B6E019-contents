@@ -1,0 +1,2370 @@
+#### Label settings ####
+New.lab <- c("d13Corg" = "paste(delta^13,C[TOC])", "d13Ctot" = "paste(delta^13,C[tot])", "d15Ntot" = "paste(delta^15,N[tot])", "A: Core sections" = "MasterCore",
+             "Corg.N_atom" = "C/N", "X.C_inorg_DeltaM" = "TIC", "wt..Ntot" = "wt~'%N'[tot]",
+             "Fe/Al" = "Fe/Al", "Rb/Sr" = "Rb/Sr", "Ti/Al" = "Ti/Al", "K/Ca" = "K/Ca", "C14" = "paste(Dating^14,C)",
+             "L" = "L\\*", "RABD660_670" = "RABD[660-670]", "Q7.4" = "Q[7/4]", "Chlo_a" = "Chlo[a]~(mg.g^-1)",
+             "MAAT" = "MAAT", "MAP" = "MAP~(mm.yr^-1)", "Altitude" = "Altitude", "AI" = "AI", "Pspr" = "P[spring]~(mm.yr^-1)",
+             "IIIa.IIa" = "Sigma(IIIa/IIa)", "Ib.Ia" = "Ib/Ia", "IR6_7Me" = "IR[6+7~Me]","IRp6_7Me" = "IRp[6+7~Me]","IR6Me" = "IR[6~Me]","IR7Me" = "IR[7~Me]", "GDGT0.Crenar" = "GDGT[0]/Crenar", "pCren" = "\'%\'[Cren]",
+             "pCren.p" = "\'%\'[Cren*minute]",
+             # "Art_Ama/Poa" = "(Ar.+Amar.)/Poa.", "Poa/Ama" = "Poa./Amar.", "Ama/Art" = "Amar./Ar.", "Art/Ama+Art" = "Ar./(Amar.+Ar.)", "Art+Ama/Poa" = "(Ar.+Amar.)/Poa.", "Poa/Art" = "Poa./Ar.",
+             "Art_Ama/Poa" = "over((Artemisia+Amaranth.), Poaceae)", "Poa/Ama" = "over(Poaceae, Amaranthaceae)", "Ama/Art" = "over(Amaranthaceae,Artemisia)", "Art/Ama+Art" = "over(Artemisia,(Amaranthaceae+Artemisia))", "Art+Ama/Poa" = "over((Artemisia+Amaranthaceae),Poaceae)", "Poa/Art" = "over(Poaceae,Artemisia)", "AP/NAP" = "over(Arboreal~Pollen, Non-Arboreal~Pollen)",
+             "PC1" = "PC1[XRF]", "PC2" = "PC2[XRF]", "MS" = "MS~(10^-5~SI)", "Sus_mag" = "")
+
+My.unit <- c("K/Ca" = NA, "Rb/Sr" = NA, "Rb/K" = NA, "Fe/Mn" = NA, "Ca/Mg" = NA, "Ca/Ti" = NA, "Al/Si" = NA, "Zr/Ti" = NA, "A: Core sections" = NA, "Inc/Coh" = NA, "Mn/Fe" = NA, "Coh/Inc" = NA, "Fe/Ti" = NA,
+             "Ti/Al" = NA, "Fe/Al" = NA, "Br/Ti" = NA, "Sr/Ca" = NA, "S/Fe" = NA, "Si/Ti" = NA, "S/Ti" = NA, "K/Ti" = NA, "Mg/Ca" = NA, "Sr/Ti" = NA, "Coh" = NA, "Inc" = NA, "C14" = NA, "MI" = NA,
+             "Al" = NA, "Si" = NA, "K" = NA, "Ti" = NA, "S" = NA, "Mn" = NA, "Fe" = NA, "Ca" = NA, "Zr" = NA, "Zn" = NA, "Rb" = NA, "Sr" = NA, "Br" = NA, "Cu" = NA, "Pb" = NA, "Ar" = NA, "P" = NA,
+             "PC1" = NA, "PC2" = NA, "BIT" = "%", "IIIa.IIa" = NA, "Q7.4" = NA, "RABD660_670" = NA, "CONISS" = NA, "Sus_mag" = "10e-5 SI", "Chlo_a" = NA, "Density" = NA, "MS" = NA, 
+             "Ib.Ia" = NA, "pCren" = NA, "pCren.p" = NA, "IR6_7Me" = "%", "IRp6_7Me" = "%", "GDGT0.Crenar" = NA, "IR" = NA, "CI" = NA, " " = NA,
+             "MAAT" = "°C", "MAP" = NA, "Altitude" = "m a.s.l.", "AI" = NA, "Pspr" = NA, "Units" = NA,
+             "Poa/Art" = NA, "Poa/Ama" = NA, "Ama/Art" = NA, "Art/Ama+Art" = NA, "AP/NAP" = NA, "Art_Ama/Poa" = NA,
+             "Corg.N_atom" = NA, "d13Corg" = "%", "d15Ntot" = "%", "d13Ctot" = "%")
+
+Fazilman.clus.color <- c("#7042b9ff", "#6872b3ff", "#35978F", "#737591ff", "grey75", "#c1982eff", "#BF812D", "#4b3f0dff")
+
+TabRa <- list(data.frame(Deno = c("Artemisia"), Nomi = c("Chenopodiaceae")),
+              data.frame(Deno = c("Artemisia", "Chenopodiaceae"), Nomi = c("Poaceae"))
+              )
+
+#### Functions ####
+Plot.geoch.core <- function(XRF, MS, Isotope, GDGT, Select.interv.x, XRF.SD, GDGT.min, GDGT.max, 
+                            Hiatus.age, Axis.x.tible, Nb.ticks.minors, Change.titles = NULL,
+                            Plot.x, CONISS, Nzone, Ratio, Limites.x, Remove.GDGT, Keep.GDGT, 
+                            Print.cluster.zone, Reverse.arrow, Smooth.sd = T, Smooth.proxy = NULL,
+                            Remove.MS, Groupes, Remove.Isotope, Keep.Isotope, Manual.line, return.plot = F, 
+                            Display.legend, Arrows, Keep.MS, Nsous.zone, Manual.small.line, Manual.color.curves = NULL,
+                            Col.area, Cparam, Remove.XRF, Keep.XRF, Save.CONISS, Smooth.param = 0.6,
+                            Zone.clim2, Name.zone2, Temp.zone2, Panel.param = NULL, Arrow.y = NULL,
+                            Save.plot, W, H, Zone.clim, Name.zone, Temp.zone, C14.path = NULL){
+  #### Initialisation ####
+  library(tidypaleo)
+  library(ggrepel)
+  if(missing(Nb.ticks.minors)){Nb.ticks.minors = NULL}
+  if(missing(Axis.x.tible)){Axis.x.tible = NULL}
+  if(missing(Hiatus.age)){Hiatus.age = NULL}
+  if(missing(XRF)){XRF = NULL}
+  if(missing(XRF.SD)){XRF.SD = NULL}
+  if(missing(Isotope)){Isotope = NULL}
+  if(missing(MS)){MS = NULL}
+  if(missing(GDGT)){GDGT = NULL}
+  if(missing(GDGT.min)){GDGT.min = NULL}
+  if(missing(GDGT.max)){GDGT.max = NULL}
+  if(missing(Plot.x)){stop("Select the age / depth feature for the plot.", call. = F)}
+  if(missing(CONISS)){CONISS = F}
+  if(missing(Col.area)){Col.area = NULL}
+  if(missing(Arrows)){Arrows = F}
+  if(missing(Display.legend)){Display.legend = F}
+  if(missing(Print.cluster.zone)){Print.cluster.zone = F}
+  if(missing(Manual.small.line)){Manual.small.line = NULL}
+  if(missing(Ratio)){Ratio = NULL}
+  if(missing(Groupes)){Groupes = NULL}
+  if(missing(Nzone)){Nzone = NULL}
+  if(missing(Nsous.zone)){Nsous.zone = NULL}
+  if(missing(Manual.line)){Manual.line = NULL}
+  if(missing(Remove.XRF)){Remove.XRF = NULL}
+  if(missing(Remove.Isotope)){Remove.Isotope = NULL}
+  if(missing(Remove.MS)){Remove.MS = NULL}
+  if(missing(Remove.GDGT)){Remove.GDGT = NULL}
+  if(missing(Keep.XRF)){Keep.XRF = NULL}
+  if(missing(Keep.MS)){Keep.MS = NULL}
+  if(missing(Keep.Isotope)){Keep.Isotope = NULL}
+  if(missing(Keep.GDGT)){Keep.GDGT = NULL}
+  if(missing(Save.plot)){Save.plot = NULL}
+  if(missing(Save.CONISS)){Save.CONISS = NULL}
+  if(missing(W)){W = NULL}
+  if(missing(H)){H = NULL}
+  if(missing(Select.interv.x)){Select.interv.x = 1000}
+  if(missing(Reverse.arrow)){Reverse.arrow = NULL}
+  if(missing(Zone.clim)){Zone.clim = NULL}
+  if(missing(Zone.clim2)){Zone.clim2 = NULL}
+  if(missing(Name.zone2)){Name.zone2 = NULL}
+  if(missing(Name.zone)){Name.zone = NULL}
+  if(missing(Temp.zone) & is.null(Zone.clim) == F){Temp.zone = rep("C", length(Zone.clim))}
+  if(missing(Temp.zone) & is.null(Zone.clim) == T){Temp.zone = F}
+  if(missing(Temp.zone2)){Temp.zone2 = NULL}
+  
+  Possible.x <- c("Age", "mean", "Litho", "Units", "MCD", "X", "SECT.NUM", "SECT.DEPTH", "MCD.1",
+                  "Ordin1", "Ordin2", "Ordin3", "Ordin4", "Ordin5")
+  Keep.zone.clim.full <- NULL
+  
+  #### Color ramp setting for zone temp ####
+  if(any(unique(grepl("#", Temp.zone))) == T){
+    print("Manual color scale for climate zone activated.")
+    Rect.color.scale <- Temp.zone
+    names(Rect.color.scale) <- Rect.color.scale
+    if(any(unique(grepl("#", Temp.zone2))) == T){
+      Rect.color.scale <- unique(c(Temp.zone, Temp.zone2))
+      names(Rect.color.scale) <- Rect.color.scale
+      
+    }
+    
+  }
+  else{
+    Rect.color.scale <- c('grey')
+    if(length(unique(Temp.zone)) == 0){Rect.color.scale <- c("grey")}
+    if(length(unique(Temp.zone)) == 3){Rect.color.scale <- c("#75AADB", "black", "#E76D51")}
+    if(length(unique(Temp.zone)) == 1 & "G" %in% unique (Temp.zone)){Rect.color.scale <- c("grey")}
+    if(length(unique(Temp.zone)) == 1 & "C" %in% unique(Temp.zone)){Rect.color.scale <- c("#75AADB")}
+    if(length(unique(Temp.zone)) == 1 & "W" %in% unique(Temp.zone)){Rect.color.scale <- c("#E76D51")}
+    if(length(unique(Temp.zone)) == 2 & "C" %in% unique(Temp.zone) & "W" %in% unique(Temp.zone)){Rect.color.scale <- c("#E76D51", "#75AADB")}
+    if(length(unique(Temp.zone)) == 2 & "G" %in% unique(Temp.zone) & "W" %in% unique(Temp.zone)){Rect.color.scale <- c("black", "#E76D51")}
+    if(length(unique(Temp.zone)) == 2 & "G" %in% unique(Temp.zone) & "C" %in% unique(Temp.zone)){Rect.color.scale <- c("#75AADB", "black")}
+  }
+  
+  #### Zone temp settings ####
+  if(is.null(Zone.clim) == F){
+    Keep.zone.clim.full <- Zone.clim
+    if(missing(Limites.x) == F){
+      Zone.clim <- c(Limites.x[1], Zone.clim[which(Zone.clim >= Limites.x[1] & Zone.clim <= Limites.x[2])], Limites.x[2])
+    }
+  }
+  
+  if(is.null(Col.area) == F){
+    if((is.null(Zone.clim) == F | is.null(Zone.clim2) == F)){
+      if(Col.area == 1){
+        My_name_zone = Name.zone
+        My_temp_zone = Temp.zone
+        My_zone_clim = Zone.clim
+      }
+      if(Col.area == 2){
+        My_name_zone = Name.zone2
+        My_temp_zone = Temp.zone2
+        My_zone_clim = Zone.clim2
+      }
+      
+      
+      yo = data.frame(xmin = My_zone_clim[seq(1,length(My_zone_clim), by=2)], 
+                      xmax = My_zone_clim[seq(2,length(My_zone_clim), by=2)], 
+                      Temp.col = My_temp_zone)}
+    else{yo = data.frame(xmin = 0, xmax = 0, Temp.col = "black"); My_zone_clim <- NULL}
+    
+    if((is.null(Name.zone) == F | is.null(Name.zone2) == F) & is.null(My_zone_clim) == F){
+      yo2 = data.frame(xmin = My_zone_clim[seq(1,length(My_zone_clim), by=2)], 
+                       xmax = My_zone_clim[seq(2,length(My_zone_clim), by=2)],
+                       Temp.col = My_temp_zone,
+                       Title.zone = My_name_zone)}
+    else{yo2 = data.frame(xmin = 0, xmax = 0, Temp.col = "", Title.zone = "", Categorie = "")}
+    
+    Zone.clim.to.plot <- geom_rect(data = yo, inherit.aes = F, na.rm = T,
+                                   mapping = aes(xmin = -Inf, xmax= +Inf, ymin = xmin, ymax = xmax, fill = Temp.col),
+                                   alpha=0.1, color = "grey", linewidth = 0.2, linetype = 0)
+    
+  }
+  else{Zone.clim.to.plot <- NULL}
+  
+  if(is.null(Hiatus.age) == F){
+    Hiatus.area <- data.frame(xmin = Hiatus.age[1], xmax = Hiatus.age[2])
+    Hiatus.area <- geom_rect(data = Hiatus.area, inherit.aes = F,
+                             mapping = aes(ymin=xmin, ymax=xmax, xmin=-Inf, xmax=+Inf), fill = "grey97",
+                             alpha = 1, color = "grey60", linewidth = 0, linetype = 0, na.rm = T)}
+  else{Hiatus.area <- NULL}
+  
+  #### XRF ####
+  if(is.null(XRF) == F){
+    XRF.keep <- XRF[names(XRF) %in% Possible.x]
+    XRF <- XRF[!names(XRF) %in% setdiff(Possible.x, Plot.x)]
+    #### XRF interval ####
+    if(is.null(XRF.SD) == F){
+      Plot.SD <- Plot.x
+      XRF.SD[setdiff(names(XRF), names(XRF.SD))] <- NA
+      XRF.SD <- XRF.SD[names(XRF)]
+      XRF.max <- cbind(XRF[Plot.SD], XRF[setdiff(names(XRF.SD),Plot.SD)] + 1.96*XRF.SD[setdiff(names(XRF.SD),Plot.SD)])
+      XRF.min <- cbind(XRF[Plot.SD], XRF[setdiff(names(XRF.SD),Plot.SD)] - 1.96*XRF.SD[setdiff(names(XRF.SD),Plot.SD)])
+      Mratio.max <- XRF[0]
+      Mratio.min <- XRF[0]
+    }
+    
+    #### Calcul des Ratios ####
+    if(is.null(Ratio) == F){
+      Mratio <- XRF[0]
+      deno <- gsub("/.*", "", Ratio)
+      nomi <- gsub(".*/", "", Ratio)
+      for(i in 1:length(Ratio)){
+        Mratio[i] <- XRF[deno[i]] / XRF[nomi[i]] 
+        names(Mratio)[i] <- Ratio[i]
+        
+        if(is.null(XRF.SD) == F){
+          Mratio.min[i] <- XRF.min[deno[i]] / XRF.min[nomi[i]] 
+          Mratio.max[i] <- XRF.max[deno[i]] / XRF.max[nomi[i]] 
+          names(Mratio.min)[i] <- Ratio[i]
+          names(Mratio.max)[i] <- Ratio[i]
+        }
+      }
+    }
+    #### Selection des proxy ####
+    if(is.null(Remove.XRF) == F){
+      XRF <- XRF[setdiff(names(XRF), Remove.XRF)]
+      if(is.null(XRF.SD) == F){
+        XRF.min <- XRF.min[setdiff(names(XRF.min), Remove.XRF)]
+        XRF.max <- XRF.max[setdiff(names(XRF.max), Remove.XRF)]
+      }
+    }
+    if(is.null(Keep.XRF) == F){
+      XRF <- XRF[c(Keep.XRF, Plot.x)]
+      if(is.null(XRF.SD) == F){
+        XRF.min <- XRF.min[c(Plot.x, intersect(Keep.XRF, names(XRF.min)))]
+        XRF.max <- XRF.max[c(Plot.x, intersect(Keep.XRF, names(XRF.max)))]
+      }
+    }
+    
+    #### Mise en forme de la matrice ####
+    if(is.null(Ratio) == F){
+      XRF <- cbind(XRF, Mratio)
+      if(is.null(XRF.SD) == F){
+        XRF.min <- cbind(XRF.min, Mratio.min)
+        XRF.max <- cbind(XRF.max, Mratio.max)
+      }
+    }
+    n.XRF <- ncol(XRF)-1
+    
+    XRF <- reshape2::melt(XRF, id = Plot.x)
+    names(XRF)[1] <- "Plot.x"
+    XRF <- na.omit(XRF)                 # iniore les valeurs maquantes
+    
+    if(is.null(XRF.SD) == F){
+      XRF.min <- reshape2::melt(XRF.min, id = Plot.x)
+      names(XRF.min)[1] <- "Plot.x"
+      names(XRF.min)[3] <- "Min"
+      XRF.min <- na.omit(XRF.min)                 # iniore les valeurs maquantes
+      
+      XRF.max <- reshape2::melt(XRF.max, id = Plot.x)
+      names(XRF.max)[1] <- "Plot.x"
+      names(XRF.max)[3] <- "Max"
+      XRF.max <- na.omit(XRF.max)                 # iniore les valeurs maquantes
+      
+      XRF <- merge(XRF, XRF.min, by = c("Plot.x", "variable"), all = T)
+      XRF <- merge(XRF, XRF.max, by = c("Plot.x", "variable"), all = T)
+    }
+  }
+  else{n.XRF <- 0}
+  
+  #### Isotope ####
+  if(is.null(Isotope) == F){
+    #### Selection des proxy ####
+    if(is.null(Remove.Isotope) == F){Isotope <- Isotope[setdiff(names(Isotope), Remove.Isotope)]}
+    if(is.null(Keep.Isotope) == F){Isotope <- Isotope[Keep.Isotope]}
+    n.Iso <- ncol(Isotope)-1
+    #### Mise en forme de la matrice ####
+    #if(is.null(Ratio) == F){Isotope <- cbind(Isotope, Mratio)}
+    Isotope <- reshape2::melt(Isotope, id = Plot.x)
+    names(Isotope)[1] <- "Plot.x"
+    Isotope <- na.omit(Isotope)                 # iniore les valeurs maquantes
+  }
+  else{n.Iso <- 0}
+  
+  #### MS ####
+  if(is.null(MS) == F){
+    MS.keep <- MS[names(MS) %in% Possible.x]
+    MS <- MS[!names(MS) %in% setdiff(Possible.x, Plot.x)]
+    if(is.null(Remove.MS) == F){MS <- MS[setdiff(names(MS), Remove.MS)]}
+    if(is.null(Keep.MS) == F){MS <- MS[c(Keep.MS, Plot.x)]}
+    n.MS <- ncol(MS)-1
+    MS <- reshape2::melt(MS, id = Plot.x)
+    names(MS)[1] <- "Plot.x"
+    MS <- na.omit(MS)                 # iniore les valeurs maquantes
+  }
+  else{n.MS <- 0}
+  
+  #### GDGT ####
+  if(is.null(GDGT) == F){
+    #### Selection des proxy ####
+    GDGT.keep <- GDGT[names(GDGT) %in% Possible.x]
+    GDGT <- GDGT[!names(GDGT) %in% setdiff(Possible.x, Plot.x)]
+    if(is.null(Remove.GDGT) == F){GDGT <- GDGT[setdiff(names(GDGT), Remove.GDGT)]}
+    if(is.null(Keep.GDGT) == F){GDGT <- GDGT[c(Keep.GDGT, Plot.x)]}    
+    if(is.null(Remove.GDGT) == T & is.null(Keep.GDGT) == T){
+      print("Too much GDGT indexe to plot.")
+      Keep.GDGT = c("BIT", "Ib.Ia", "IR6_7Me", "pCren", "CI", "MBTp5Me", "CBT5Me")
+      GDGT <- GDGT[c(Keep.GDGT, Plot.x)]
+    }
+    n.GDGT <- ncol(GDGT)-1
+    
+    #### Intervalles ####
+    if(is.null(GDGT.min) == F){GDGT.min <- GDGT.min[intersect(names(GDGT.min), names(GDGT))]}
+    if(is.null(GDGT.max) == F){GDGT.max <- GDGT.max[intersect(names(GDGT.max), names(GDGT))]}
+    
+    #### Melt ####
+    GDGT <- reshape2::melt(GDGT, id = Plot.x)
+    names(GDGT)[1] <- "Plot.x"
+    GDGT <- na.omit(GDGT)
+    
+    if(is.null(GDGT.min) == F){
+      GDGT.min <-  reshape2::melt(GDGT.min, id = Plot.x)
+      names(GDGT.min)[1] <- "Plot.x"
+      names(GDGT.min)[3] <- "Min"
+      GDGT.min <- na.omit(GDGT.min)
+      GDGT <- full_join(GDGT, GDGT.min, by = c("Plot.x", "variable"))
+    }
+    if(is.null(GDGT.max) == F){
+      GDGT.max <-  reshape2::melt(GDGT.max, id = Plot.x)
+      names(GDGT.max)[1] <- "Plot.x"
+      names(GDGT.max)[3] <- "Max"
+      GDGT.max <- na.omit(GDGT.max)
+      GDGT <- full_join(GDGT, GDGT.max, by = c("Plot.x", "variable"))
+    }
+  }
+  else{n.GDGT <- 0}
+  
+  #### Merge datas ####
+  # library(plyr) # plyr::rbind.fill
+  if(is.null(MS) == F & is.null(XRF) == F & is.null(Isotope) == F & is.null(GDGT) == T){
+    Label.proxy = c("XRF", "MS", "Isotopes")
+    Mgeoch.core <- plyr::rbind.fill(XRF, MS, Isotope)}
+  if(is.null(MS) == F & is.null(XRF) == T & is.null(Isotope) == F & is.null(GDGT) == T){
+    Label.proxy = c("Isotopes", "MS")
+    Mgeoch.core <- plyr::rbind.fill(Isotope, MS)}
+  if(is.null(MS) == T & is.null(XRF) == F & is.null(Isotope) == F & is.null(GDGT) == T){
+    Label.proxy = c("XRF", "Isotopes")
+    Mgeoch.core <- plyr::rbind.fill(XRF, Isotope)}
+  if(is.null(MS) == F & is.null(XRF) == F & is.null(Isotope) == T & is.null(GDGT) == T){
+    Label.proxy = c("XRF", "MS")
+    Mgeoch.core <- plyr::rbind.fill(XRF, MS)}
+  if(is.null(MS) == F & is.null(XRF) == T & is.null(Isotope) == T & is.null(GDGT) == T){
+    Label.proxy = c("MS")
+    Mgeoch.core <- MS}
+  if(is.null(MS) == T & is.null(XRF) == F & is.null(Isotope) == T & is.null(GDGT) == T){
+    Label.proxy = c("XRF")
+    Mgeoch.core <- XRF}
+  if(is.null(MS) == T & is.null(XRF) == T & is.null(Isotope) == F & is.null(GDGT) == T){
+    Label.proxy = c("Isotopes")
+    Mgeoch.core <- Isotope}
+  if(is.null(MS) == T & is.null(XRF) == T & is.null(Isotope) == T & is.null(GDGT) == F){
+    Label.proxy = c("GDGT")
+    Mgeoch.core <- GDGT}
+  
+  if(is.null(MS) == F & is.null(XRF) == F & is.null(Isotope) == F & is.null(GDGT) == F){
+    Label.proxy = c("(A) XRF", "(B) MS", "(C) Isotopes and Elements Geochimistry", "(D) GDGTs")
+    Mgeoch.core <- plyr::rbind.fill(XRF, MS, Isotope, GDGT)}
+  if(is.null(MS) == F & is.null(XRF) == T & is.null(Isotope) == F & is.null(GDGT) == F){
+    Label.proxy = c("(A) Isotopes", "(B) MS", "(C) GDGTs")
+    Mgeoch.core <- plyr::rbind.fill(Isotope, MS, GDGT)}
+  if(is.null(MS) == T & is.null(XRF) == F & is.null(Isotope) == F & is.null(GDGT) == F){
+    Label.proxy = c("(A) XRF", "(B) Isotopes", "(C) GDGTs")
+    Mgeoch.core <- plyr::rbind.fill(XRF, Isotope, GDGT)}
+  if(is.null(MS) == F & is.null(XRF) == F & is.null(Isotope) == T & is.null(GDGT) == F){
+    Label.proxy = c("(A) µ-XRF", "(B) MS + Spectrocolorimetry", "(C) GDGTs")
+    Mgeoch.core <- plyr::rbind.fill(XRF, MS, GDGT)}
+  if(is.null(MS) == F & is.null(XRF) == T & is.null(Isotope) == T & is.null(GDGT) == F){
+    Label.proxy = c("(A) MS", "(B) GDGTs")
+    Mgeoch.core <- plyr::rbind.fill(MS, GDGT)}
+  if(is.null(MS) == T & is.null(XRF) == F & is.null(Isotope) == T & is.null(GDGT) == F){
+    Label.proxy = c("(A) µ-XRF", "(B) GDGTs")
+    Mgeoch.core <- plyr::rbind.fill(XRF, GDGT)}
+  if(is.null(MS) == T & is.null(XRF) == T & is.null(Isotope) == F & is.null(GDGT) == F){
+    Label.proxy = c("(A) Isotope", "(B) GDGTs")
+    Mgeoch.core <- plyr::rbind.fill(Isotope, GDGT)}
+  
+  #### Categories ####
+  if(is.null(Groupes) == F){
+    Categorie <- as.character(Mgeoch.core$variable)
+    for(i in 1:length(Groupes)){
+      for(k in Groupes[[i]]){
+        k <- paste("\\b", k, "\\b", sep = "")
+        Categorie[grep(k, Categorie)] <- i
+      }
+    }
+    # Categorie[str_length(Categorie) > 1] <- "0"
+    Mgeoch.core <- cbind(Mgeoch.core, Categorie)
+  }
+  else{
+    Categorie <- as.character(Mgeoch.core$variable)
+    Categorie[is.factor(Mgeoch.core$variable)] <- "0"
+    Mgeoch.core <- cbind(Mgeoch.core, Categorie)
+    My_arrows <- NULL
+  }
+  
+  #### Smooth curves by proxies ####
+  if(is.null(Smooth.proxy) == F){
+    if(Smooth.proxy == "XRF"){SubDB <- Mgeoch.core[Mgeoch.core$variable  %in% levels(XRF$variable),]}
+    if(Smooth.proxy == "MS"){SubDB <- Mgeoch.core[Mgeoch.core$variable  %in% levels(MS$variable),]}
+    if(Smooth.proxy == "GDGT"){SubDB <- Mgeoch.core[Mgeoch.core$variable  %in% levels(GDGT$variable),]}
+    if(Smooth.proxy == "all"){SubDB <- Mgeoch.core}
+    My_smooth <- geom_smooth(data = SubDB, method = "loess", se = Smooth.sd, fullrange = F, level = 0.95, linetype="solid", #formula = "x ~ y",
+                             size = .8, show.legend = F, span = Smooth.param, alpha = 0.2, orientation = "y")}
+  else{My_smooth <- NULL}
+  
+  #### CONISS  ####
+  if(CONISS == T){
+    Mgeoch.core.cn <- tibble::as_tibble(Mgeoch.core[,1:3])
+    coniss.c <- tidypaleo::nested_data(Mgeoch.core.cn, qualifiers = Plot.x, key = variable, value = value, trans = scale, fill = 0)
+    # Sous Zone
+    if(is.null(Nsous.zone) == F){
+      coniss.c2 <- tidypaleo::nested_chclust_coniss(coniss.c, n_groups = Nsous.zone)
+      Dendro.coniss2 <- tidypaleo::layer_dendrogram(coniss.c2, aes(y = Plot.x), variable = "CONISS", sequential_facets = T, size = 0.05, alpha = 0.5)
+      Line.coniss2 <- tidypaleo::layer_zone_boundaries(coniss.c2, aes(y = Plot.x), colour = "grey50", linetype = "dotted")
+    }
+    else{
+      Dendro.coniss2 <- NULL
+      coniss.c2 <- NULL
+      Line.coniss2 <- NULL
+    }
+    
+    # Zone
+    if(is.null(Nzone) == F){coniss.c <- tidypaleo::nested_chclust_coniss(coniss.c, n_groups = Nzone)}
+    else{coniss.c <- tidypaleo::nested_chclust_coniss(coniss.c)}
+    Dendro.coniss <- tidypaleo::layer_dendrogram(coniss.c, aes(y = Plot.x), variable = "CONISS", sequential_facets = T, size = 0.05, alpha = 0.5)
+    Line.coniss <- tidypaleo::layer_zone_boundaries(coniss.c, aes(y = Plot.x), colour = "grey30")
+    
+    if(Print.cluster.zone == T){
+      df <- dplyr::select(coniss.c[[12]][[1]], Plot.x, hclust_zone)
+      df <- na.omit(df)
+      df <- dplyr::group_by(df, hclust_zone) 
+      CONISS.bound <- dplyr::summarize(df, Min.CONISS = min(Plot.x, na.rm = T), Max.CONISS = max(Plot.x, na.rm = T))
+      CONISS.bound$hclust_zone <- paste("L", rev(CONISS.bound$hclust_zone), sep = "")
+      
+      if(is.null(Nsous.zone) == F){
+        df2 <- dplyr::select(coniss.c2[[12]][[1]], Plot.x, hclust_zone)
+        df2 <- na.omit(df2)
+        df2 <- dplyr::group_by(df2, hclust_zone) 
+        CONISS.bound2 <- dplyr::summarize(df2, Min.CONISS = min(Plot.x, na.rm = T), Max.CONISS = max(Plot.x, na.rm = T))
+        CONISS.bound2$hclust_zone <- paste("U", rev(CONISS.bound2$hclust_zone), sep = "")
+        
+        CONISS.bound$Category <- "Litho"
+        CONISS.bound2$Category <- "Units"
+        CONISS.bound.full <- rbind(CONISS.bound, CONISS.bound2)
+        CONISS.bound.full <- CONISS.bound.full[order(CONISS.bound.full$Min.CONISS),]
+        
+        Unit <- NA
+        for(i in 1:nrow(CONISS.bound.full)){
+          if(grepl("L", CONISS.bound.full$hclust_zone[i]) == T){
+            Unit = CONISS.bound.full$hclust_zone[i]}
+          else{
+            CONISS.bound.full$hclust_zone[i] <- paste("U", gsub("L", "", Unit), sep = "")
+          }}
+        CONISS.bound.full$hclust_zone <- ave(as.character(CONISS.bound.full$hclust_zone), CONISS.bound.full$hclust_zone, 
+                                             FUN=function(x) if (length(x)>1) paste0(x[1], '.', seq_along(x)) else x[1])
+        
+        
+        CONISS.bound <- CONISS.bound.full
+      }
+      
+      print("CONISS layer boundaries :")
+      print(CONISS.bound)
+    }  
+    
+    if(is.null(Save.CONISS) == F){
+      if(is.null(MS) == F){Fine.line <- c(match(CONISS.bound$Max.CONISS, MS.keep[[Plot.x]]), match(CONISS.bound$Min.CONISS, MS.keep[[Plot.x]]))}
+      else{Fine.line <- c(match(CONISS.bound$Max.CONISS, XRF.keep[[Plot.x]]), match(CONISS.bound$Min.CONISS, XRF.keep[[Plot.x]]))}
+      
+      Fine.line <- sort(Fine.line[!is.na(Fine.line)])
+      Fine.line <- Fine.line[1:nrow(CONISS.bound)]
+      saveRDS(CONISS.bound, Save.CONISS)}
+  }
+  else{
+    Dendro.coniss <- NULL
+    Dendro.coniss2 <- NULL
+    Line.coniss <- NULL
+    Line.coniss2 <- NULL
+    
+  }
+  
+  #### Color settings ####
+  if(is.null(Manual.color.curves)){
+    A = 1:11
+    Keep.col <- A[-c(6,7)] #there are 9, I exluded the two lighter hues
+    if(length(unique(Mgeoch.core$Categorie)) >= 4){Keep.col <- A[-c(4,5,6,7)]}
+    if(length(unique(Mgeoch.core$Categorie)) == 3){Keep.col <- A[-c(1,2,4,5,6,8,9)]}
+    if(length(unique(Mgeoch.core$Categorie)) == 2){Keep.col <- A[-c(2,3,4,5,6,7,8,9,10)]}
+    my_orange = brewer.pal(n = 11, "Spectral")[Keep.col] 
+    orange_palette = colorRampPalette(my_orange)
+    my_orange = orange_palette(length(unique(Mgeoch.core$Categorie)))
+    
+    if("0" %in% unique(Mgeoch.core$Categorie) == T){my_orange <- c("black", my_orange)}
+    # names(my_orange) <- sort(unique(Mgeoch.core$Categorie))
+  }
+  else{
+    my_orange <- Manual.color.curves
+  }
+  names(my_orange) <- unique(Mgeoch.core$Categorie)
+  
+  #### Graphical settings ####
+  if(missing(Limites.x)){Limites.x = c(min(Mgeoch.core$Plot.x, na.rm = T), max(Mgeoch.core$Plot.x, na.rm = T))}
+  Limites.zone <- c(Limites.x[1], Limites.x[2])
+  Mgeoch.core <- Mgeoch.core[Mgeoch.core$Plot.x <= Limites.x[2] & Mgeoch.core$Plot.x >= Limites.x[1],]
+  if(is.null(Mgeoch.core$Min) == F){Incertitude.zone <- geom_ribbon(mapping = aes(xmin = Min, xmax = Max), alpha = 0.2, size = 0.15, linetype = "dashed")}
+  else{Incertitude.zone <- NULL}
+  if(Display.legend == F){Display.legend <- "none"}
+  if(Display.legend == T){Display.legend <- "bottom"}
+  if(is.null(Axis.x.tible) == F){Title.age = Axis.x.tible}
+  
+  if(is.null(Nb.ticks.minors) == F){
+    My_ticks <- c(Limites.zone[1], round(seq(0, Limites.zone[2], by = Nb.ticks.minors)))
+    My_ticks[!grepl(paste(rep("0", str_length(Nb.ticks.minors)), collapse = ""), My_ticks)] <- ""
+    My_seq <- c(Limites.zone[1], round(seq(0, Limites.zone[2], by = Nb.ticks.minors)))}
+  else{
+    Nb.ticks.minors = 1
+    My_ticks <- c(Limites.zone[1], round(seq(0, Limites.zone[2], by = Select.interv.x)))
+    My_seq <- c(Limites.zone[1], round(seq(0, Limites.zone[2], by = Select.interv.x)))}
+  
+  # if(max(Mgeoch.core$Plot.x, na.rm = T) > 1000){
+  #   Mgeoch.core$Plot.x <- Mgeoch.core$Plot.x/10
+  #   }
+  if(Plot.x == "Age"){Title.age = "Time (cal. year BP)"}
+  if(Plot.x == "Depth"){Title.age = "Depth (mm)"}
+  if(Plot.x == "MCD"){Title.age = "Mastercore depth (mm)"}
+  if(grepl("Ord", Plot.x) == T){Title.age = "Surface samples ordination"}
+  
+  if(is.null(Change.titles) == F){
+    if(length(Label.proxy) == length(Change.titles)){Label.proxy <- Change.titles}
+    else{print("You need to give the same size vector for Change.titles")}
+  }
+  
+  if(is.null(Limites.x) == F & is.null(Manual.line) == F){Manual.line <- Manual.line[Manual.line >= Limites.x[1] & Manual.line <= Limites.x[2]]}
+  if(is.null(Limites.x) == F & is.null(Manual.small.line) == F){Manual.small.line <- Manual.small.line[Manual.small.line >= Limites.x[1] & Manual.small.line <= Limites.x[2]]}
+  
+  #### Arrows ####
+  if(Arrows == T & is.null(Groupes) == F){
+    if(is.null(XRF.SD) == T & is.null(GDGT.max) == T & is.null(GDGT.min) == T){My_arrows <- unique(Mgeoch.core[c(2,4)])}
+    else{My_arrows <- unique(Mgeoch.core[c(2,6)])}
+    
+    My_arrows <- My_arrows[match(My_arrows$variable, levels(My_arrows$variable)),]
+    levels(My_arrows$variable) <- factor(My_arrows$variable)
+    Max.by.kat <- aggregate(Mgeoch.core$value, by = list(Mgeoch.core$variable), FUN = max, na.rm = T)[[c(2)]]
+    Min.by.kat <- aggregate(Mgeoch.core$value, by = list(Mgeoch.core$variable), FUN = min, na.rm = T)[[c(2)]]
+    
+    if(is.null(Arrow.y) == T){Arrow.y <- 0.015}
+    My_arrows$x <- (Limites.zone[2] + Arrow.y*Limites.zone[2])
+    
+    My_arrows$Max <- Max.by.kat
+    My_arrows$Min <- Min.by.kat
+    My_arrows$Mil <- (Min.by.kat + Max.by.kat)/2
+    My_arrows$Q3 <- Min.by.kat*.2 + Max.by.kat*.8
+    My_arrows$Q1 <- Min.by.kat*.8 + Max.by.kat*.2
+    
+    # My_arrows$variable[My_arrows$Categorie == 0] <- NA
+    My_arrows <- na.omit(My_arrows)
+    
+    My_arrows$Label.proxy <- as.character(My_arrows$variable)
+    for(i in 1:nrow(My_arrows)){
+      for(j in 1:length(Groupes)){
+        if(My_arrows$Label.proxy[i] %in% Groupes[[j]]){
+          if(is.null(names(Groupes[j])) == F){
+            My_arrows$Label.proxy[i] <- names(Groupes[j])}}}}
+    
+    # My_arrows$Label.proxy <- gsub("\\.", " ", My_arrows$Label.proxy)
+    My_arrows$Label.proxy <- gsub("\\.", "\n", My_arrows$Label.proxy)
+    if(is.null(Reverse.arrow) == F){
+      for(i in Reverse.arrow){
+        New_Q1 <- My_arrows[i,"Q3"]
+        New_Q3 <- My_arrows[i,"Q1"]
+        My_arrows[i,"Q1"] <- New_Q1
+        My_arrows[i,"Q3"] <- New_Q3
+      }
+    }
+    My_arrows$Arrow.y <- Arrow.y
+    My_Plab <- geom_text(data = My_arrows, inherit.aes = F,
+                         aes(x = Mil,
+                             y = (x + 1.5*Arrow.y*x),
+                             label = Label.proxy#,
+                             # color = Categorie
+                         )
+    )
+    
+    My_arrows.draw <- geom_segment(data = My_arrows, inherit.aes = F,
+                                   aes(x = Q1,
+                                       y = x,
+                                       xend = Q3,
+                                       yend = x, color = Categorie),
+                                   size = .6, arrow = arrow(length = unit(0.3, "cm")))
+    
+  }
+  else{
+    My_Plab <- NULL
+    My_arrows.draw <- NULL
+  }
+  
+  #### Climate zone names ####
+  if(is.null(Name.zone) == F & is.null(Zone.clim) == F){
+    library("tableHTML")
+    library("ggh4x")
+    if(is.null(Keep.zone.clim.full) == F){Zone.clim <- Keep.zone.clim.full}
+    
+    data_hline <- data.frame(variable = as.factor(c(levels(Mgeoch.core$variable), rep(" ", length(Name.zone)))),
+                             SECT.NUM = c(rep(NA,nlevels(Mgeoch.core$variable)), Name.zone),
+                             MY_col = c(rep(NA,nlevels(Mgeoch.core$variable)), Temp.zone),
+                             Lab.size = c(rep(NA, nlevels(Mgeoch.core$variable)), rep(5, length(Name.zone))),
+                             xmin = c(rep(NA, nlevels(Mgeoch.core$variable)), Zone.clim[odd(seq(1, length(Zone.clim)))]),
+                             xmax = c(rep(NA, nlevels(Mgeoch.core$variable)), Zone.clim[even(seq(1, length(Zone.clim)))]),
+                             ymin = c(rep(NA, nlevels(Mgeoch.core$variable)), rep(4, length(Name.zone))),
+                             ymax = c(rep(NA, nlevels(Mgeoch.core$variable)), rep(8, length(Name.zone))))
+    
+    if(is.null(Name.zone2) == F & is.null(Zone.clim2) == F){
+      data_hline2 <- data.frame(variable = as.factor(rep(" ", length(Name.zone2))), SECT.NUM = Name.zone2, MY_col = Temp.zone2,
+                                xmin = Zone.clim2[odd(seq(1, length(Zone.clim2)))],
+                                xmax = Zone.clim2[even(seq(1, length(Zone.clim2)))], Lab.size = rep(4.95, length(Name.zone2)),
+                                ymin = rep(0, length(Name.zone2)), ymax = rep(4, length(Name.zone2)))
+      
+      data_hline <- rbind(data_hline, data_hline2)
+      if(is.null(Panel.param) == T){Panel.param = 0.5}
+    }
+    else{if(is.null(Panel.param) == T){Panel.param = 0.35}}
+    
+    data_hline <- data_hline[data_hline$SECT.NUM %in% data_hline$SECT.NUM[data_hline$xmax >= Limites.x[1] & data_hline$xmin <= Limites.x[2]],]
+    data_hline$xmin[which.min(data_hline$xmin)] <- Limites.x[1]
+    data_hline$xmax[which.max(data_hline$xmax)] <- Limites.x[2]
+    
+    Panel.size <- ggh4x::force_panelsizes(cols = c(rep(1, nlevels(Mgeoch.core$variable)), Panel.param))
+    Rect_core <- geom_rect(data = data_hline, inherit.aes = F,
+                           mapping = aes(xmin = ymin, xmax = ymax, ymin = xmin, ymax = xmax, fill = MY_col, color = MY_col),
+                           alpha=0.6, #color = "grey30",
+                           # linewidth = .5, show.legend = F, 
+                           na.rm = T
+    )
+    Text_core <- geom_text(data = data_hline, inherit.aes = F,
+                           aes(x = (ymin+ymax)/2, y = (xmin+xmax)/2, label = SECT.NUM, size = Lab.size),
+                           vjust = 0.5, hjust = 0.5, color = "grey20" , na.rm = T)}
+  else{
+    Panel.size <- NULL
+    Rect_core <- NULL
+    Text_core <- NULL
+  }
+  
+  #### C14 dates ####
+  if(is.null(C14.path) == F){
+    C14.table <- data.frame(read.csv(C14.path))
+    if(is.null(Limites.x) == F ){C14.table <- C14.table[C14.table$depth >= Limites.x[1]/10 & C14.table$depth <= Limites.x[2]/10,]}
+    
+    library(Bchron)
+    for(i in 1:nrow(C14.table)){
+      if(C14.table$age[i] > 0){
+        singleResult <- BchronCalibrate(C14.table$age[i], C14.table$error[i], "intcal20", allowOutside = T)
+        
+        C14.table$age[i] <- round(mean(singleResult$Date1$ageGrid), digits = 0)
+      }
+    }
+    C14.table$age[C14.table$age > 1000] <- paste(round(C14.table$age[C14.table$age > 1000], digits = -2)/1000, "k")
+    if(any(names(C14.table) == "labID") == T){
+      data_C14 <- data.frame(variable = as.factor(c(levels(Mgeoch.core$variable), rep("C14", 2*nrow(C14.table)))),
+                             SECT.NUM = c(rep(NA,nlevels(Mgeoch.core$variable)), C14.table$labID, C14.table$labID),
+                             Lab.etiquette = c(rep(NA, nlevels(Mgeoch.core$variable)), rep(NA, nrow(C14.table)), C14.table$age),
+                             x = c(rep(NA, nlevels(Mgeoch.core$variable)), rep(NA, nrow(C14.table)), C14.table$depth*10),
+                             y = c(rep(NA, nlevels(Mgeoch.core$variable)), rep(8, length(C14.table$depth)), rep(0, length(C14.table$depth)))
+      )
+      
+      if(is.null(Panel.param) == T){Panel.param = 0.35}
+      Panel.size2 <- ggh4x::force_panelsizes(cols = c(rep(1, nlevels(Mgeoch.core$variable)), Panel.param))
+      
+      pC14 <- geom_point(data = data_C14, inherit.aes = F,
+                         aes(x = y, y = x), color = "black",
+                         size = 2, alpha = 1, na.rm = T)
+      
+      pC14_txt <- geom_text_repel(data = data_C14, inherit.aes = F,
+                                  mapping = aes(x = y, y = x, label = Lab.etiquette),
+                                  nudge_y = 10, segment.inflect = F, segment.square = F, segment.curvature = 0.2,
+                                  force = 5, nudge_x  = 200, direction = "y", hjust = 0, na.rm = T,
+                                  size = 4, parse = F, segment.size = 0.5, segment.colour = "grey50"
+      )
+    }
+    else{
+      print("The table of C14 must have its first column as labID.")
+      Panel.size2 <- NULL; pC14 <- NULL; pC14_txt <- NULL
+    }
+  }
+  else{
+    Panel.size2 <- NULL; pC14 <- NULL; pC14_txt <- NULL
+  }
+  
+  #### Plot ####
+  p1 <- ggplot(data = Mgeoch.core, mapping =  aes(y = Plot.x,
+                                                  x = value,
+                                                  color = Categorie, fill = Categorie)) + 
+    #### Geoch ####
+  tidypaleo::geom_lineh(linewidth = 0.1) +
+    geom_hline(yintercept = rep(Manual.line, nlevels(Mgeoch.core$variable)), col = "grey10", lty = 2, alpha = 0.6)+
+    geom_hline(yintercept = rep(Manual.small.line, nlevels(Mgeoch.core$variable)), col = "grey30", linetype = "dotted", alpha = 0.6)+
+    Incertitude.zone +
+    geom_point(size = 0.8, na.rm = T) +
+    My_smooth +
+    My_arrows.draw +
+    My_Plab + 
+    scale_y_reverse(breaks = My_seq, labels = My_ticks, expand = c(0.05, 0)) +
+    scale_x_continuous(name = NULL, position = "top",  breaks = scales::pretty_breaks(n = 4), limits = NULL) +
+    # scale_x_continuous(name = NULL, position = "top",  breaks = scales::pretty_breaks(n = 4), limits = NULL, expand = c(0,0.1)) +
+    labs(x = NULL, y = Title.age) +
+    Hiatus.area +
+    tidypaleo::facet_geochem_gridh(vars(variable), renamers = New.lab, units = My.unit, default_units = "%") +
+    Panel.size + Dendro.coniss + Line.coniss + Line.coniss2 +
+    scale_fill_manual(values = my_orange, guide = "none")+
+    
+    #### Zone clim ####
+  new_scale_fill()+
+    Zone.clim.to.plot +
+    scale_fill_manual(values = rev(Rect.color.scale), guide = "none", name = NULL, labels = NULL, breaks = NULL, na.translate = FALSE)+
+    scale_size_continuous(range = c(3.5,5))+
+    Rect_core + Text_core +
+    
+    guides(color = guide_legend(nrow = 1))+        # force les legendes a salligner sur une unique ligne
+    scale_color_manual(values = my_orange, name = "Proxies: ", labels = names(Groupes))+
+    Panel.size2 + pC14_txt + pC14 +
+    #### Theme ####
+  theme(
+    axis.title.x=element_text(size=13),              # XRF
+    axis.text.x.top = element_text(angle = 45, vjust = 1, hjust = 1, size = 8),
+    axis.title.y=element_text(size=15),              # AGE
+    axis.line.x = element_line(lineend = "butt", ),                   # fait apparaitre seulement l'axe des y
+    axis.line.y = element_line(lineend = "butt"),    # fait apparaitre seulement l'axe des x, coupe au bout
+    legend.position = Display.legend,                        # permet de mettre le carre des legendes en bas
+    legend.key = element_blank(),  # carré autours du symbole
+    legend.direction = "horizontal", plot.background = element_blank(), panel.grid = element_blank(),
+    panel.spacing = unit(0.04, "lines"),
+    panel.background=element_blank(), strip.background = element_blank(),
+    strip.placement = "outside", panel.border = element_blank(), strip.clip = "off",
+    strip.text = element_text(size = 11),
+    legend.justification = c("left"),               # left, top, right, bottom
+    plot.margin = unit(c(0,0,0,0), "lines")
+  )
+  
+  #### Grob ####
+  if(length(which(c(is.null(XRF), is.null(MS), is.null(GDGT), is.null(Isotope)) == F)) > 1){
+    z <- ggplot2::ggplotGrob(p1)
+    my_pos = 8 # Il faut essyer au hasard de changer cette valeur si pb apres maj
+    z <- gtable::gtable_add_rows(z, z$height[my_pos], pos = c(my_pos-1))  # New row added below row my_pos (avant 6)
+    # z <- gtable::gtable_add_rows(z, unit(10/10, "cm"), 14)
+    
+    N.tot <- c(n.XRF, n.XRF+n.MS, n.XRF+n.MS+n.Iso, n.XRF+n.MS+n.Iso+n.GDGT)
+    N.tot <- unique(N.tot)
+    N.tot <- (N.tot*2)
+    N.tot <- c(1, N.tot)
+    N.tot <- N.tot + 5
+    for(i in 1:length(Label.proxy)){
+      z <- gtable::gtable_add_grob(z,
+                                   list(grid::rectGrob(gp = grid::gpar(col = NA, fill = NA, size = .5)),
+                                        grid::textGrob(Label.proxy[i], gp = grid::gpar(cex = 1.2, fontface = 'bold', col = "black"))),
+                                   t = my_pos, l=N.tot[i], b = my_pos, r=N.tot[i+1], name = c("a", "b"))
+      z <- gtable::gtable_add_cols(z, unit(2/10, "line"), N.tot[i+1])
+      N.tot <- N.tot + 1
+    }
+    Ptot <- z
+  }
+  else{Ptot <- p1}
+  
+  #### Save plot and export ####
+  if(is.null(Save.plot) == F){
+    if(is.null(W) == F & is.null(H) == F){ggsave(Ptot, file = Save.plot, width = W*0.026458333, height = H*0.026458333, units = "cm")}
+    else{ggsave(Save.plot)}}
+  else{print(Ptot)}
+  
+  if(Print.cluster.zone == T & CONISS == T){return(CONISS.bound)}
+  if(Print.cluster.zone == F & CONISS == F){
+    if(return.plot == T){
+      return(Ptot);print("yes")
+    }
+    else{return(Mgeoch.core)}
+  }
+}
+
+Diversite_pollen <- function(Mpol){
+  MDivers <- data.frame(Diversite=0)
+  DivNul <- colSums(Mpol, na.rm = F)
+  DivNul[is.na(DivNul)] <- 0
+  for (nsite in 1:length(Mpol)){
+    counter = 0
+    if(DivNul[nsite] == 0){MDivers[nsite]=0}
+    else{
+      for (ntaxon in 1:length(Mpol[,1])){
+        if(Mpol[ntaxon,nsite] != 0){
+          counter = counter + 1
+          MDivers[nsite]=counter
+        }}}}
+  names(MDivers) <- names(Mpol)
+  return(MDivers)
+}
+
+DP_plot_algue <- function(MP_lake, MA_lake, Plot.x = "Age", Save.plot, H, W, Time.window = 200,
+                          nlake, CONISS, Nzone){
+  if(missing(Save.plot)){Save.plot = NULL}
+  if(missing(W)){W = NULL}
+  if(missing(H)){H = NULL}
+  if(missing(nlake)){nlake = NULL}
+  
+  #### Save plots ####
+  if(is.null(Save.plot) == F){
+    Path.to.create <- gsub("(.*/).*\\.pdf.*","\\1", Save.plot)
+    dir.create(file.path(Path.to.create), showWarnings = FALSE)
+    if(is.null(W) == F & is.null(H) == F){
+      pdf(file = Save.plot, width = W*0.01041666666667, height = H*0.01041666666667)}
+    else{pdf(file = Save.plot)}}
+  
+  ### Prepa data
+  Prof <- MA_lake[1,]
+  Prof <- Prof[colnames(MP_lake)]
+  Age <- MA_lake[Plot.x,]
+  Age <- Age[colnames(MP_lake)]
+  
+  ### Fusion taxons rares
+  Max_seuil = 0.01
+  MP_max <- MP_lake[0]
+  MP_max[, "max"] <- apply(MP_lake[,], 1, max)
+  MP_dom <- MP_lake[rowSums(MP_max)>Max_seuil,]
+  MP_rare <- MP_lake[rowSums(MP_max)<=Max_seuil,]
+  MP_dom["Other algae" ,] <- colSums(MP_rare)
+  
+  ## Mongolie
+  # InfoPol  <- read.csv(file="Import/POLLEN/Index_pollen_Mongolia.csv",sep=",",dec=".", header = T, stringsAsFactors = F, row.names = 1)
+  # InfoPol  <- cbind(InfoPol, Couleur=rep(InfoPol$AP.NAP))
+  # InfoPol$Couleur<- gsub('NAP', '#f27041ff', InfoPol$Couleur)
+  # InfoPol$Couleur<- gsub('AP', '#6db38fff', InfoPol$Couleur)
+  # InfoPol$Couleur<- gsub('NaN', '#cfce90ff', InfoPol$Couleur)
+  # 
+  ### Couleur
+  # C <- subset(InfoPol, select=c(Couleur))
+  # row.names(C)<- InfoPol$Nom
+  # MP_color <- cbind(MP_dom[0], C[rownames(MP_dom),])
+  # couleur = as.character(MP_color[[1]])
+  
+  ### Calcul AP et NAP
+  #AP <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$AP.NAP == "AP"]),])
+  #NAP <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$AP.NAP == "NAP"]),])
+  #MP_dom <- rbind(MP_dom, AP=AP, NAP=NAP)
+  
+  spec <- data.frame(t(MP_dom))
+  spec <- spec*100                   # On passe en pourcentage
+  
+  
+  spec <- spec[order(as.double(Age)),]
+  Age <- Age[order(as.double(Age))]
+  
+  #### Lake name ####
+  if(is.null(nlake) == F){
+    title(main = paste("Pollen diagram of", nlake, "Lake"), line = 7, cex.main = 2.7, font.main = 1, adj = 0)
+    My_lake_name <- paste("Pollen diagram of", nlake, "Lake")
+  }
+  else{My_lake_name <- NULL}
+  
+  if(Plot.x == "Age"){Title.x <- "Time (yr cal BP)"}
+  else{Title.x <- "Core depth (cm)"}
+  
+  ### CONISS Clustering
+  if(CONISS == TRUE){
+    diss <- dist(sqrt(t(MP_dom)/100)^2)
+    Clust_DP <- chclust(diss, method = "coniss")
+    #bstick(Clust_DP, 10)
+  }
+  else{Clust_DP = NULL}
+  
+  ### Plot
+  p <- strat.plot(spec, yvar = as.double(Age), 
+                  y.rev = TRUE, 
+                  scale.percent = TRUE,     # True pour des pourcentages
+                  srt.xlabel = 45,           # Rotation de 45 des noms de taxon
+                  title = My_lake_name,
+                  ylabel = Title.x,
+                  y.tks = seq(-50,round(max(Age),digits=-2), Time.window),
+                  plot.poly = TRUE, 
+                  col.poly =      "#a2dbe1ff",         # bleu clair
+                  col.bar =       "#8c92a1ff",         # Fait apparaitre les traits continus
+                  col.poly.line = "#8c92a1ff",         # gris fonce
+                  exag=FALSE,                # Fait apparaitre la zone x10
+                  col.exag="auto",           # Zone x10 couleur auto
+                  clust = Clust_DP,
+                  clust.width=0.075 
+                  #fun1=sm.fun                # application ou non du lissage
+  )
+  if(CONISS == TRUE & Nzone > 0){addClustZone(p, Clust_DP, Nzone, 
+                                              lwd=1.5, lty=2, col="grey25") 
+  }
+  if(is.null(Save.plot) == F){dev.off()}
+}
+
+DP_plot_Fungal <- function(MP_lake, MA_lake, Conc.Plot, Cortege, Pol.Sum, Path.index, Save.plot, H, W, Log.trans,
+                           nlake, CONISS, Nzone, Auto.lab.NPP, Time.window, Keep.cortege = NULL, Order.fungal = NULL,
+                           Seuil.NPP, Diversity.pollen.ratio, Col.cortege, NPP.conc.round, Limites = NULL,
+                           Spore.diversity, Richesse.type, Spore.influx, Sort.taxon, Save.path){
+  #### Default values ####
+  if(missing(Log.trans)){Log.trans = FALSE}
+  if(missing(Col.cortege)){Col.cortege = FALSE}
+  if(missing(Cortege)){Cortege = FALSE}
+  if(missing(CONISS)){CONISS = FALSE}
+  if(missing(Nzone)){Nzone = FALSE}
+  if(missing(Conc.Plot)){Conc.Plot = FALSE}
+  if(missing(Pol.Sum)){Pol.Sum = NULL}
+  if(missing(Spore.diversity)){Spore.diversity = FALSE}
+  if(missing(Richesse.type)){Richesse.type = FALSE}
+  if(missing(Diversity.pollen.ratio)){Diversity.pollen.ratio = FALSE}
+  if(missing(Auto.lab.NPP)){Auto.lab.NPP = F}
+  if(missing(Spore.influx)){Spore.influx = FALSE}
+  if(missing(nlake)){nlake = "Site1"}
+  if(missing(NPP.conc.round)){NPP.conc.round =2}
+  if(missing(Seuil.NPP)){Seuil.NPP = 300}
+  if(missing(Time.window)){Time.window = 500}
+  if(missing(Sort.taxon)){Sort.taxon = "Auto"}
+  if(missing(Save.path)){Save.path = NULL}
+  if(missing(Save.plot)){Save.plot = NULL}
+  if(missing(W)){W = NULL}
+  if(missing(H)){H = NULL}
+  
+  #### Save plots ####
+  if(is.null(Save.plot) == F){
+    Path.to.create <- gsub("(.*/).*\\.pdf.*","\\1", Save.plot)
+    dir.create(file.path(Path.to.create), showWarnings = FALSE)
+    if(is.null(W) == F & is.null(H) == F){
+      pdf(file = Save.plot, width = W*0.01041666666667, height = H*0.01041666666667)}
+    else{pdf(file = Save.plot)}}
+  
+  
+  
+  #### Prepa data ####
+  row.names(MP_lake) <- gsub("cf\\.", "cf", row.names(MP_lake))
+  row.names(MP_lake) <- gsub("\\.", " ", row.names(MP_lake))
+  
+  if(is.null(Limites) == F){
+    MA_lake <- data.frame(t(MA_lake), check.names = F)
+    MA_lake <- MA_lake[MA_lake$Age >= Limites[1] & MA_lake$Age <= Limites[2],]
+    MA_lake <- data.frame(t(MA_lake), check.names = F)
+    To.keep <- intersect(names(MA_lake), names(MP_lake))
+    MP_lake <- MP_lake[To.keep]
+  }
+  Prof <- MA_lake[1,]
+  Prof <- Prof[colnames(MP_lake)]
+  Age <- MA_lake["Age",]
+  Age <- Age[colnames(MP_lake)]
+  
+  #### Fusion taxons rares #### 
+  MP_max <- MP_lake[0]
+  MP_max[, "max"] <- apply(MP_lake[,], 1, max)
+  MP_dom <- MP_lake[rowSums(MP_max)>Seuil.NPP,]
+  MP_rare <- MP_lake[rowSums(MP_max)<=Seuil.NPP,]
+  MP_dom["Other Spores" ,] <- colSums(MP_rare)
+  
+  #### Couleurs #### 
+  InfoPol  <- read.csv(file = Path.index, sep=",",dec=".", header = T, stringsAsFactors = F, row.names = 1)
+  if(any(unique(InfoPol$Cortege) %in% c("Foret", "Tourbiere", "PaturageFort", "PaturageMoyen", "Erosion", "Parasitique")) == T){Old.cortege = T}
+  else{Old.cortege = F}
+  
+  if(Col.cortege == F){
+    InfoPol  <- cbind(InfoPol, Couleur=rep(InfoPol$AP.NAP))
+    InfoPol$Couleur<- gsub('NAP', '#f27041ff', InfoPol$Couleur)
+    InfoPol$Couleur<- gsub('AP', '#6db38fff', InfoPol$Couleur)
+    InfoPol$Couleur<- gsub('NaN', '#cfce90ff', InfoPol$Couleur)
+    InfoPol$Couleur<- gsub('Spore', '#aa373aff', InfoPol$Couleur)
+    InfoPol$Couleur<- gsub('Algue', '#62cfdaff', InfoPol$Couleur)
+    InfoPol$Couleur<- gsub('Sum', '#aa373aff', InfoPol$Couleur)
+  }
+  else{
+    InfoPol  <- cbind(InfoPol, Couleur=rep(InfoPol$Cortege))
+    if(Old.cortege == T){
+      InfoPol$Couleur<- gsub('Foret', '#779d3e', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Tourbiere', '#6bbab4', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('PaturageFort', '#ee4a1d', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('PaturageMoyen', '#ee4a1d', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Erosion', '#eeb448ff', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Parasitique', 'grey', InfoPol$Couleur)
+    }
+    else{
+      InfoPol$Couleur[grepl('Saprophytic spores', InfoPol$Couleur)] <- '#779d3e'
+      InfoPol$Couleur[grepl('Hydrophytic', InfoPol$Couleur)] <- '#6bbab4'
+      InfoPol$Couleur<- gsub('Wetland markers', '#6bbab4', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Dung fungal spores', '#ee4a1d', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Erosion markers', '#ee883f', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Aridity markers', '#eeb448', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Other NPPs', 'grey', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Parasitic spores', 'grey', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Plant pathogens', 'grey', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Ubiquitous spores', 'grey10', InfoPol$Couleur)
+    }
+    
+    InfoPol$Couleur<- gsub('Spore Diversity', '#aa373aff', InfoPol$Couleur)
+    InfoPol$Couleur<- gsub('NaN', '#aa373aff', InfoPol$Couleur)
+    InfoPol$Couleur[InfoPol$Couleur == ""] <- "grey"
+    InfoPol$Couleur[is.na(InfoPol$Couleur)] <- "grey"
+  }
+  
+  if(length(setdiff(row.names(MP_lake),InfoPol$Nom))>0){
+    print("**** Attention: these taxa are not in the Index. ****")
+    print(setdiff(row.names(MP_lake),InfoPol$Nom))
+  }
+  
+  # print(InfoPol)
+  
+  #### Calcul diversite ####
+  if(Spore.diversity == TRUE){
+    if(is.null(Pol.Sum) == T | Diversity.pollen.ratio == F){MatDiv <- Diversite_pollen(MP_lake)}
+    if(is.null(Pol.Sum) == F & Diversity.pollen.ratio == T){MatDiv <- Diversite_pollen(MP_lake)
+    MatDiv <- 10000*MatDiv/Pol.Sum}}
+  else{MatDiv <- NULL}
+  
+  
+  
+  #### Calcul Richesse en Type ####
+  if(Richesse.type == T ){
+    if(Old.cortege == T){
+      MForet <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Foret"]),])
+      MTourbiere <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Tourbiere"]),])
+      MPaturageFort <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "PaturageFort"]),])
+      MPaturageMoyen <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "PaturageMoyen"]),])
+      MPaturage <- MPaturageMoyen + MPaturageFort
+      MErosion <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Erosion"]),])
+      MParasite <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Parasitique"]),])
+      MatDiv2 <- rbind(Saprophite = MForet, Peat = MTourbiere, Erosion = MErosion, Parasite = MParasite, Grazing = MPaturage)
+    }
+    else{
+      MForet <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Saprophytic spores"]),])
+      MTourbiere <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Wetland markers"]),])
+      MPaturage <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Dung fungal spores"]),])
+      MErosion <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Erosion markers"]),])
+      MParasite <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Plant pathogens"]),])
+      Maridity <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Aridity markers"]),])
+      Mother <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Other NPPs"]),])
+      MatDiv2 <- rbind(Saprophilous_Spore = MForet, Peat_Spore = MTourbiere, Erosion_Spore = MErosion, Parasitic_Spore = MParasite, Grazzing_Spore = MPaturage, Aridity_Spore = Maridity, "Other NPPs" = Mother)
+    }
+    
+    if(is.null(Pol.Sum) == F & Diversity.pollen.ratio == T){MatDiv2 <- 10000*MatDiv2/Pol.Sum}
+    if(Spore.diversity == T){MatDiv <- rbind(MatDiv, MatDiv2)}
+    if(Spore.diversity == F){MatDiv <- MatDiv2}
+  }
+  
+  #### Calcul Cortege ####
+  if(Cortege == T){
+    if(Old.cortege == T){
+      Foret <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Foret"]),])
+      Tourbiere <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Tourbiere"]),])
+      PaturageFort <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "PaturageFort"]),])
+      PaturageMoyen <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "PaturageMoyen"]),])
+      Erosion <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Erosion"]),])
+      Parasite <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Parasitique"]),])
+      PaturageMoyen <-PaturageMoyen + PaturageFort
+      Mcortege <- rbind(Saprophilous_Spore = Foret, Peat_Spore = Tourbiere, Erosion_Spore = Erosion, Parasitic_Spore = Parasite, Grazzing_Spore = PaturageMoyen)
+      ColCor <- data.frame(Couleur = c("#779d3eff","#6bbab4ff","#eeb448ff","grey", "#ee4a1dff"))
+    }  
+    else{
+      Foret <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Saprophytic spores"]),])
+      Tourbiere <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Wetland markers"]),])
+      Paturage <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Dung fungal spores"]),])
+      Erosion <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Erosion markers"]),])
+      Other <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Other NPPs"]),])
+      Parasite <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Plant pathogens"]),])
+      Aridity <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Aridity markers"]),])
+      Mcortege <- rbind("Other NPPs" = Other, Peat_Spore = Tourbiere, Saprophilous_Spore = Foret, Parasitic_Spore = Parasite, Erosion_Spore = Erosion, Grazzing_Spore = Paturage, Aridity_Spore = Aridity)
+      ColCor <- data.frame(Couleur = c("#779d3e","#6bbab4","purple","#ee883f","#ee4a1d", "#eeb448", "grey"))
+    }  
+    row.names(ColCor)<-row.names(Mcortege)
+    if(is.null(Keep.cortege) == F){
+      Mcortege <- Mcortege[row.names(Mcortege) %in% Keep.cortege,]
+      ColCor <- subset(ColCor, row.names(ColCor) %in% Keep.cortege, Couleur)
+    }
+    
+    Keep.taxa.lab <- c(row.names(MP_dom), row.names(Mcortege))
+    spec <- cbind(data.frame(t(MP_dom), check.names = F), data.frame(t(Mcortege), check.names = F))
+    names(spec) <- Keep.taxa.lab
+  }
+  if(Cortege == F){
+    Keep.taxa.lab <- row.names(MP_dom)
+    spec <- cbind(data.frame(t(MP_dom), check.names = F))
+    names(spec) <- Keep.taxa.lab
+    Mcortege = MP_dom[0]
+    ColCor = NULL}
+  
+  spec <- spec[order(as.double(Age)),]
+  Age <- Age[order(as.double(Age))]
+  
+  #### Calcul des pourcentage ####
+  if(Conc.Plot == T){
+    if(is.null(Pol.Sum) == T){spec <- (spec*100)/rowSums(MP_lake)}
+    if(is.null(Pol.Sum) == F){spec <- (spec*100)/(rowSums(MP_lake)+Pol.Sum)}
+  }
+  
+  #### Sort.Taxon ####
+  Sort.col <- function(Type){
+    if(missing(Type)){Type = "Normal"}
+    if(Type == "Auto.alpha"){InfoPol <- InfoPol[order(InfoPol$Nom),]}
+    if(Type == "Auto.mean"){
+      spec <- spec[,order(colMeans(spec), decreasing = T)]
+      InfoPol <- InfoPol[match(names(spec), InfoPol$Nom),]
+    }
+    InfoPol <- InfoPol[order(InfoPol$Couleur),]
+    inter <- intersect(InfoPol$Nom, names(spec))
+    return(inter)}
+  
+  if(Sort.taxon == 'None'){print("Not sorted")}
+  if(Sort.taxon == 'Auto'){
+    spec <- spec[,match(Sort.col(),names(spec))]}
+  if(Sort.taxon == 'Auto.alpha'){
+    spec <- spec[,match(Sort.col(Type = "Auto.alpha"),names(spec))]}    
+  if(Sort.taxon == 'Auto.mean'){
+    spec <- spec[,match(Sort.col(Type = "Auto.mean"), names(spec))]}
+  if(Sort.taxon == 'Manual'){
+    if(missing(Manual.sort)){print("**ERROR** The sorting vector is not working. We applied an auto-sorting.")
+      spec <- spec[,match(Sort.col(),names(spec))]}
+    else{spec <- spec[,match(Manual.sort,names(spec))]}}
+  
+  #### CONISS Clustering ####
+  if(CONISS == TRUE){
+    diss <- dist(sqrt(t(MP_dom)/100)^2)
+    Clust_DP <- chclust(diss, method = "coniss")
+  }
+  else{Clust_DP = NULL}
+  
+  
+  
+  #### Calcul influx spore ####
+  if(Conc.Plot == F & Spore.influx == T){
+    Minflux <- rowSums(data.frame(t(MP_lake)))
+    Minflux <- Minflux[names(Age)]
+    spec["Spore.Influx"] = Minflux
+  }
+  
+  #### Couleur  #### 
+  if(Col.cortege == F){
+    C <- subset(InfoPol, select=c(Couleur))
+    row.names(C)<- InfoPol$Nom
+    
+    MP_color <- cbind(MP_dom[0], Couleur = C[rownames(MP_dom),])
+    MP_color <- rbind(MP_color, ColCor)
+    couleur = as.character(MP_color[[1]])
+    if(Conc.Plot == F & Spore.influx == T){couleur[length(couleur)+1] = "#aa373aff"}}
+  else{couleur <- InfoPol[match(names(spec), InfoPol$Nom), "Couleur"]}
+  
+  #### Add.plot concentration, NPP ####
+  if(is.null(MatDiv) == T){P1L = 0
+  P1R = 1}
+  
+  if(is.null(MatDiv) == F){P1L = 0
+  if(length(MatDiv[,1]) == 1){P1R = 0.86}
+  else{P1R = (1 - 0.07*length(MatDiv[,1]))}
+  P2L = P1R
+  P2R = 1}
+  
+  #### Graph settings (Log trans, auto.lab, Xticks ####
+  if(Auto.lab.NPP == T & is.null(Path.index) == F){
+    NPP.lab <- InfoPol$Label[match(gsub("\\.", " ", names(spec)), InfoPol$Nom)]
+  }
+  else{NPP.lab <- NULL}
+  
+  X.ticks <- round(max(spec), digits = -NPP.conc.round)/4
+  if(Log.trans == T){
+    spec <- log10(spec*100)
+    X.ticks <- round(max(spec), digits = 0)/4
+  }
+  
+  if(is.null(Time.window) == F){Time.window <- seq(-50,round(max(Age),digits=-2),Time.window)}
+  
+  if(is.null(Order.fungal) == F){print(names(spec))
+    spec <- spec[Order.fungal]
+    NPP.lab <- NPP.lab[Order.fungal]
+    couleur <- couleur[Order.fungal]
+  }
+  
+  #### Plot ####
+  if(Conc.Plot == F){
+    p <- strat.plot(spec, yvar = as.double(Age), 
+                    y.rev = TRUE, 
+                    scale.percent = T,     # True pour des pourcentages
+                    srt.xlabel = 45,           # Rotation de 45 des noms de taxon
+                    xSpace = 0.006,
+                    ylabel = "Time (yr cal BP)",
+                    y.tks = Time.window,
+                    x.pc.inc = X.ticks,
+                    plot.poly = FALSE, 
+                    plot.bar = TRUE,
+                    plot.line = FALSE, 
+                    lwd.bar = 7,
+                    col.bar = couleur,#      "#8c92a1ff",         # Fait apparaitre les traits continus
+                    exag=FALSE,                # Fait apparaitre la zone x10
+                    col.exag="auto",           # Zone x10 couleur auto
+                    clust = Clust_DP,
+                    clust.width=0.075,
+                    xRight = P1R,
+                    xLeft = P1L
+    )}
+  if(Conc.Plot == T){
+    p <- strat.plot(spec, yvar = as.double(Age), 
+                    y.rev = TRUE, 
+                    xSpace = 0.002,
+                    scale.percent = TRUE,     # True pour des pourcentages
+                    srt.xlabel = 45,           # Rotation de 45 des noms de taxon
+                    ylabel = "Time (yr cal BP)",
+                    y.tks = Time.window,
+                    x.pc.inc = round(max(spec, na.rm = F), digits = -3)/4,
+                    plot.poly = TRUE, 
+                    plot.bar = TRUE,
+                    plot.line = FALSE, 
+                    lwd.bar = 1,
+                    col.poly = couleur,#      "#a2dbe1ff",         # bleu clair
+                    col.bar = couleur,#      "#8c92a1ff",         # Fait apparaitre les traits continus
+                    col.poly.line = "#8c92a1ff",         # gris fonce
+                    exag=T,                # Fait apparaitre la zone x10
+                    col.exag="auto",           # Zone x10 couleur auto
+                    clust = Clust_DP,
+                    clust.width=0.075, 
+                    xRight = P1R,
+                    xLeft = P1L
+    )}
+  if(CONISS == T & Nzone > 0){addClustZone(p, Clust_DP, Nzone, 
+                                           lwd=1.5, lty=2, col="grey25") 
+  }
+  if(is.null(MatDiv) == F){
+    MatDiv <- data.frame(t(MatDiv))
+    MatDiv <- MatDiv[names(Age),]
+    names(MatDiv)[1] <- "Spore Diversity"
+    
+    if(Richesse.type == F){couleur.div = "#aa373aff"}
+    if(Richesse.type == T){couleur.div = c("#aa373aff", as.character(ColCor[[1]]))}
+    
+    strat.plot(MatDiv, yvar = as.double(Age),
+               y.rev = TRUE, 
+               scale.percent = T,     # True pour des pourcentages
+               srt.xlabel = 45,           # Rotation de 45 des noms de taxon
+               xSpace = 0.007,
+               x.pc.inc = round(max(MatDiv), digits = -1)/2,
+               y.axis        = F,
+               plot.poly     = F, 
+               plot.bar      = F,
+               plot.line     = T, 
+               lwd.bar       = 1,
+               lwd.line = 2,
+               col.poly      = couleur.div,          # gris clair
+               col.bar       = "#8c92a1ff",         # Fait apparaitre les traits continus
+               col.poly.line = couleur.div,     # gris fonce
+               col.line = couleur.div,
+               exag = F,                # Fait apparaitre la zone x10
+               col.exag="auto",           # Zone x10 couleur auto
+               xLeft = P2L,
+               xRight = P2R,
+               add = T
+    )}
+  if(is.null(Save.plot) == F){dev.off()}
+  
+  #### Return data ####
+  return(list(spec, Age, MatDiv, InfoPol))
+}
+
+DP_pol <- function(MP, MA_lake = NULL, Plot.x = NULL, Malg_conc = NULL, Mpol_conc = NULL, Malg_frac, NPP_lake, Keep.pollen = NULL,
+                   Path.index = NULL, Save.plot, W, H, Order.algues = NULL, Keep.cortege = NULL, Order.fungal = NULL, Keep.algue = NULL,
+                   nlake, Seuil.Pour, Seuil.Pour.alg, Seuil.Conc.alg, Seuil.NPP, Auto.Pollen.lab, Order.pollen = NULL, Keep.NPP = NULL,
+                   Sort.taxon, Pollen.lab, Cortege, Richesse.type, Only.AP, Zone.hiatus, Time.window, Show.stats = T,
+                   Save.missing.tax = NULL,
+                   Manual.sort = NULL, AP.NAP, CONISS, Nzone, Pollen.diversity, Spore.diversity, Limites, Al.Pol.influx,
+                   Pol.influx.total, Spore.influx, Ratio, Save.path, Zone.clim, Name.zone, Temp.zone){
+  #### Default values ####
+  if(missing(Limites)){Limites = NULL}
+  if(missing(Zone.clim)){Zone.clim = NULL}
+  if(missing(Name.zone)){Name.zone = NULL}
+  if(missing(Temp.zone)){Temp.zone = rep("C", length(Zone.clim))}
+  if(missing(Cortege)){Cortege = FALSE}
+  if(missing(Richesse.type)){Richesse.type = FALSE}
+  if(missing(Malg_conc) & missing(Malg_frac)){Plot.algue = F}
+  else{Plot.algue = T}
+  if(missing(Malg_frac)){Malg_frac = NULL}
+  
+  if(missing(NPP_lake)){Plot.NPP = F}else{Plot.NPP = TRUE}
+  if(missing(AP.NAP)){AP.NAP = FALSE}
+  if(missing(Only.AP)){Only.AP = FALSE}
+  if(missing(CONISS)){CONISS = FALSE}
+  if(missing(Nzone)){Nzone = FALSE}
+  Diversite.plot = F
+  if(missing(Pollen.diversity)){Pollen.diversity = FALSE}
+  if(missing(Spore.diversity)){Spore.diversity = FALSE}
+  if(Pollen.diversity == T | Spore.diversity == T){Diversite.plot = T}
+  if(missing(Pol.influx.total)){Pol.influx.total = FALSE}
+  if(missing(Al.Pol.influx)){Al.Pol.influx = FALSE}
+  if(missing(Spore.influx)){Spore.influx = FALSE}
+  if(missing(nlake)){nlake = NULL}
+  if(missing(Seuil.Pour)){Seuil.Pour = 0.01}
+  if(missing(Seuil.Pour.alg)){Seuil.Pour.alg = 0.01}
+  if(missing(Seuil.Conc.alg)){Seuil.Conc.alg = 2000}
+  if(missing(Seuil.NPP)){Seuil.NPP = 300}
+  if(missing(Time.window)){Time.window = NULL}
+  if(missing(Sort.taxon)){Sort.taxon = "Auto"}
+  NBDisplay <- c(Plot.algue, Plot.NPP, Pollen.diversity, Pol.influx.total)
+  if(missing(Ratio)){Ratio = NULL}
+  if(missing(Zone.hiatus)){Zone.hiatus = NULL}
+  if(missing(Pollen.lab)){Pollen.lab = NULL}
+  if(missing(Auto.Pollen.lab)){Auto.Pollen.lab = F}
+  if(missing(Save.path)){Save.path = NULL}
+  if(missing(Save.plot)){Save.plot = NULL}
+  if(missing(W)){W = NULL}
+  if(missing(H)){H = NULL}
+  
+  #### Graphical settings ####
+  if(is.null(Zone.clim) ==F){
+    Rect.zone = data.frame(xmin = Zone.clim[seq(1,length(Zone.clim), by=2)],
+                           xmax = Zone.clim[seq(2,length(Zone.clim), by=2)],
+                           Temp.col = Temp.zone)}
+  else{Rect.zone = data.frame(xmin = 0, xmax = 0, Temp.col = "black")}
+  
+  if(is.null(Name.zone) == F){Rect.zone = data.frame(xmin = Zone.clim[seq(1,length(Zone.clim), by=2)],
+                                                     xmax = Zone.clim[seq(2,length(Zone.clim), by=2)],
+                                                     Temp.col = Temp.zone,
+                                                     Title.zone = Name.zone)}
+  else{Rect.zone = data.frame(xmin = 0, xmax = 0, Temp.col = "", Title.zone = "")}
+  
+  Rect.zone$Temp.col <- gsub('C', '#E5EDFB', Rect.zone$Temp.col)
+  A <- gsub('#E5EDFB', '#336CAD', Rect.zone$Temp.col)
+  Rect.zone$Temp.col <- gsub('W', '#F8E2E3', Rect.zone$Temp.col)
+  A <- gsub('W', '#D55C66', A)
+  Rect.zone$Temp.col <- gsub('G', '#BEBEBE', Rect.zone$Temp.col)
+  A <- gsub('G', 'grey10', A)
+  Rect.zone$Name.col <- A
+  
+  #### MA (or Plot x) missing ####
+  All.ages <- c("Age", "agebp", "MAge", "AgeBP2023")
+  All.depths <- c("Depth", "Top", "Bottom", "Prof", "Profondeur")
+  
+  if(is.null(MA_lake) == T){
+    print("No age-depth model provided, nor ordination. Samples ploted by alphabetical order.")
+    MA_lake <- setNames(data.frame(t(data.frame(Age = seq(1:ncol(MP))))), names(MP))
+    Plot.x <- "Ordin"
+  }
+  else{
+    if(is.null(Plot.x) == T){
+      Plot.x <- c(All.ages, All.depths)
+      Plot.x <- row.names(MA_lake)[match(Plot.x, row.names(MA_lake))[1]]
+      
+      
+      if(is.na(Plot.x) == T){
+        print("**** No automatic plot x variable found in MA_lake. Please provide one (row.names(MA_lake)). ****")
+        MA_lake <- setNames(data.frame(t(data.frame(Age = seq(1:ncol(MP))))), names(MP))
+      }
+      else{print(paste("****", Plot.x, "selected by default for plot x variable. ****"))}
+    }
+  }
+  
+  #### Prepa data ####
+  Prep.data <-function(MP_lake, Max_seuil, Type, Calc.stat = F, Only.keep = NULL, Save.missing.tax = NULL){
+    #### Default settings ####
+    if(missing(Type)){Type = "Unknown"}
+    
+    #### Limites ####
+    if(is.null(Limites) == F){
+      MA_lake <- data.frame(t(MA_lake))
+      MA_lake <- MA_lake[MA_lake$Age >= Limites[1] & MA_lake$Age <= Limites[2],]
+      MA_lake <- data.frame(t(MA_lake))
+      To.keep <- intersect(names(MA_lake), names(MP_lake))
+      MP_lake <- MP_lake[To.keep]
+    }
+    
+    #### Init Matrice + Age selection ####
+    Age <- MA_lake[Plot.x,]
+    Age <- Age[colnames(MP_lake)]
+    Age <- Age[order(as.double(Age))]
+    MP_lake <- MP_lake[colnames(Age)]
+    
+    #### Couleurs #### 
+    if(is.null(Path.index) == F){
+      InfoPol  <- read.csv(file = Path.index, sep=",",dec=".", header = T, stringsAsFactors = F, row.names = 1, check.names = FALSE)
+      InfoPol  <- cbind(InfoPol, Couleur=rep(InfoPol$AP.NAP))
+      InfoPol$Couleur<- gsub('NAP', '#f27041ff', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('AP', '#6db38fff', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('NaN', '#cfce90ff', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Unknown', '#cfce90ff', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Spore', '#aa373aff', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Algue', '#4666E9', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Algal', '#4666E9', InfoPol$Couleur)
+      InfoPol$Couleur<- gsub('Sum', '#aa373aff', InfoPol$Couleur)
+      InfoPol$Couleur[grep('Shrub', InfoPol$Cortege)] <- '#e0b300ff'
+      
+      if(length(setdiff(row.names(MP_lake),InfoPol$Nom))>0){
+        print("**** Attention: these taxa are not in the Index. ****")
+        print(setdiff(row.names(MP_lake),InfoPol$Nom))
+        if(is.null(Save.missing.tax) == F){
+          write.table(setdiff(row.names(MP_lake),InfoPol$Nom), Save.missing.tax)}
+      }
+    }
+    else{
+      InfoPol <- data.frame(Index = seq(1,nrow(MP_lake)),
+                            Nom = row.names(MP_lake),
+                            Label = row.names(MP_lake),
+                            Type = "Pollen", AP.NAP = NaN, Cortege = NaN, Couleur = "#6db38fff"
+      )
+    }
+    
+    #### Calcul diversite ####
+    if(Pollen.diversity == TRUE | Spore.diversity == TRUE){MatDiv <- Diversite_pollen(MP_lake)}
+    else{MatDiv <- NULL}
+    
+    #### Special Fungi ####
+    if(Type == "NPP"){
+      if(any(unique(InfoPol$Cortege) %in% c("Foret", "Tourbiere", "PaturageFort", "PaturageMoyen", "Erosion", "Parasitique")) == T){Old.cortege = T}
+      else{Old.cortege = F}
+      
+      #### Calcul Richesse en Type ####
+      if(Richesse.type == T ){
+        if(Old.cortege == T){
+          MForet <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Foret"]),])
+          MTourbiere <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Tourbiere"]),])
+          MPaturageFort <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "PaturageFort"]),])
+          MPaturageMoyen <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "PaturageMoyen"]),])
+          MPaturage <- MPaturageMoyen + MPaturageFort
+          MErosion <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Erosion"]),])
+          MParasite <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Parasitique"]),])
+          MatDiv2 <- rbind(Saprophite = MForet, Peat = MTourbiere, Erosion = MErosion, Parasite = MParasite, Grazing = MPaturage)
+        }
+        else{
+          MForet <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Saprophytic spores"]),])
+          MTourbiere <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Wetland markers"]),])
+          MPaturage <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Dung fungal spores"]),])
+          MErosion <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Erosion markers"]),])
+          MParasite <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Parasitic spores"]),])
+          Maridity <- Diversite_pollen(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Aridity markers"]),])
+          MatDiv2 <- rbind(Saprophite = MForet, Peat = MTourbiere, Erosion = MErosion, Parasite = MParasite, Grazing = MPaturage, Aridity = Maridity)
+        }
+        
+        if(Spore.diversity == T){MatDiv <- rbind(MatDiv, MatDiv2)}
+        if(Spore.diversity == F){MatDiv <- MatDiv2}
+      }
+      
+      #### Calcul Cortege ####
+      if(Cortege == T){
+        if(Old.cortege == T){
+          Foret <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Foret"]),])
+          Tourbiere <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Tourbiere"]),])
+          PaturageFort <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "PaturageFort"]),])
+          PaturageMoyen <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "PaturageMoyen"]),])
+          Erosion <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Erosion"]),])
+          Parasite <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Parasitique"]),])
+          PaturageMoyen <-PaturageMoyen + PaturageFort
+          Mcortege <- rbind(Saprophilous_Spore = Foret, Peat_Spore = Tourbiere, Erosion_Spore = Erosion, Parasitic_Spore = Parasite, Grazzing_Spore = PaturageMoyen)
+          ColCor <- data.frame(Couleur = c("#779d3eff","#6bbab4ff","#eeb448ff","grey", "#ee4a1dff"))
+        }  
+        else{
+          Foret <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Saprophytic spores"]),])
+          Tourbiere <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Wetland markers"]),])
+          Paturage <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Dung fungal spores"]),])
+          Erosion <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Erosion markers"]),])
+          Parasite <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Parasitic spores"]),])
+          Aridity <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$Cortege == "Aridity markers"]),])
+          Mcortege <- rbind(Saprophilous_Spore = Foret, Peat_Spore = Tourbiere, Erosion_Spore = Erosion, Parasitic_Spore = Parasite, Grazzing_Spore = Paturage, Aridity_Spore = Aridity)
+          ColCor <- data.frame(Couleur = c("#779d3eff","#6bbab4ff","purple","#ee883fff","#ee4a1dff", "#eeb448ff"))
+        }  
+        
+        row.names(ColCor)<-row.names(Mcortege)
+        
+        if(is.null(Keep.cortege) == F){
+          Mcortege <- Mcortege[row.names(Mcortege) %in% Keep.cortege,]
+          ColCor <- subset(ColCor, row.names(ColCor) %in% Keep.cortege, Couleur)
+        }
+        
+      }
+      
+      if(Cortege == F){
+        Mcortege = MP_dom[0]
+        ColCor = NULL}
+    }
+    
+    #### Fusion taxons rares ####
+    MP_max <- MP_lake[0]
+    MP_max[, "max"] <- apply(MP_lake[,], 1, max)
+    MP_dom <- MP_lake[rowSums(MP_max)>Max_seuil,]
+    MP_rare <- MP_lake[rowSums(MP_max)<=Max_seuil,]
+    
+    if(is.null(Only.keep) == F){
+      Match.OK <- Only.keep[which(Only.keep %in% row.names(MP_lake))]
+      Wrong <- Only.keep[which(!Only.keep %in% row.names(MP_lake))]
+      if(length(Wrong) > 0){
+        print("****"); print("The following taxa are wrong in the Keep.only vector:")
+        print(Wrong)
+        print("****")}
+      
+      MP_dom <- MP_lake[row.names(MP_lake) %in% Match.OK,]
+      MP_rare <- MP_lake[!row.names(MP_lake) %in% Match.OK,]
+    }
+    
+    AP.rare <- MP_rare[intersect(row.names(MP_rare),InfoPol$Nom[InfoPol$AP.NAP == "AP"]),]
+    NAP.rare <- MP_rare[intersect(row.names(MP_rare),InfoPol$Nom[InfoPol$AP.NAP == "NAP"]),]
+    
+    if(length(row.names(AP.rare)) >= 1){
+      MP_dom["Other Trees" ,] <- colSums(AP.rare)
+      MP_dom["Other Herbs" ,] <- colSums(NAP.rare)
+    }
+    else{MP_dom["Other" ,] <- colSums(MP_rare)}
+    
+    #### Sort.Taxon ####
+    Sort.col <- function(Type){
+      if(missing(Type)){Type = "Normal"}
+      if(Type == "Auto.alpha"){InfoPol <- InfoPol[order(InfoPol$Nom),]}
+      if(Type == "Auto.mean"){
+        MP_dom <- MP_dom[order(rowMeans(MP_dom), decreasing = T),]
+        InfoPol <- InfoPol[match(row.names(MP_dom), InfoPol$Nom),]
+      }
+      InfoPol <- InfoPol[order(InfoPol$Couleur),]
+      inter <- intersect(InfoPol$Nom, row.names(MP_dom))
+      return(inter)}
+    
+    if(Sort.taxon == 'None'){print("Not sorted")}
+    if(Sort.taxon == 'Auto'){
+      MP_dom <- MP_dom[match(Sort.col(),row.names(MP_dom)),]}
+    if(Sort.taxon == 'Auto.alpha'){
+      MP_dom <- MP_dom[match(Sort.col(Type = "Auto.alpha"),row.names(MP_dom)),]}    
+    if(Sort.taxon == 'Auto.mean'){
+      MP_dom <- MP_dom[match(Sort.col(Type = "Auto.mean"),row.names(MP_dom)),]}
+    if(Sort.taxon == 'Manual'){
+      if(is.null(Manual.sort) == T){print("**ERROR** The sorting vector is not working. We applied an auto-sorting.")
+        MP_dom <- MP_dom[match(Sort.col(),row.names(MP_dom)),]}
+      else{MP_dom <- MP_dom[match(Manual.sort,row.names(MP_dom)),]}}
+    
+    #### Calcul AP et NAP  #### 
+    if(AP.NAP == TRUE){
+      AP <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$AP.NAP == "AP"]),])
+      NAP <- colSums(MP_lake[intersect(row.names(MP_lake),InfoPol$Nom[InfoPol$AP.NAP == "NAP"]),])
+      AP_nul <- sum(AP)
+      if(AP_nul != 0){
+        if(Only.AP == F){MP_dom <- rbind(AP = AP, NAP = NAP, MP_dom)}
+        else{MP_dom <- rbind(AP = AP, MP_dom)}
+      }
+    }  
+    
+    #### Couleur  #### 
+    C <- subset(InfoPol, select=c(Couleur))
+    row.names(C)<- InfoPol$Nom
+    MP_color <- cbind(MP_dom[0], Couleur = C[rownames(MP_dom),])
+    if(Type == "NPP"){
+      MP_color <- rbind(MP_color, ColCor)}
+    couleur = as.character(MP_color[[1]])
+    
+    #### CONISS Clustering #### 
+    if(CONISS == TRUE){
+      diss <- dist(sqrt(t(MP_dom)/100)^2)
+      Clust_DP <- chclust(diss, method = "coniss")
+      
+      if(Calc.stat == T){
+        cc <- cutree(Clust_DP, k = Nzone)
+        Tab.stat <- data.frame(t(rbind(CONISS = cc, MP_lake)))
+        
+        Age.CONISS <- data.frame(cbind(Age = t(Age), CONISS = Tab.stat$CONISS))
+        Age.CONISS.min <- aggregate(Age.CONISS,  by = Age.CONISS["CONISS"], FUN = min)
+        Age.CONISS.max <- aggregate(Age.CONISS,  by = Age.CONISS["CONISS"], FUN = max)
+        Age.CONISS <- cbind(Age.CONISS.min[c(1:2)], Age.CONISS.max[c(2)])
+        Age.CONISS$CONISS <- paste("U", Age.CONISS$CONISS, sep = "_") 
+        names(Age.CONISS) <- c("CONISS", "Age_min", "Age_max")
+        
+        
+        Tab.stat <- aggregate(Tab.stat, list(Tab.stat[["CONISS"]]), FUN = mean, na.action = na.omit)
+        Tab.stat <- Tab.stat[-c(1)]
+        row.names(Tab.stat) <- paste("U", Tab.stat$CONISS, sep = "_")
+        Tab.stat <- data.frame(t(round(Tab.stat[-c(1)], digits = 2)*100))
+        
+        Resume <- c()
+        for(i in 1:ncol(Tab.stat)){
+          NN = row.names(Tab.stat[Tab.stat[i] > 2,])
+          VV = Tab.stat[Tab.stat[i] > 2,i]
+          NN = NN[order(VV, decreasing = T)]
+          VV = VV[order(VV, decreasing = T)]
+          JJ = paste(NN, " (", VV, " %)", sep = '', collapse = ', ')
+          Resume[i] <- JJ
+        }
+        Tab.stat <- data.frame(t(Tab.stat))
+        Tab.stat <- cbind(Tab.stat, Resume, Age.CONISS[c(2,3)])
+        if(Show.stats == T){print(Resume)}
+      }
+      else{Tab.stat <- NULL}
+    }
+    else{
+      Tab.stat <- NULL
+      Clust_DP = NULL}
+    
+    #### Calcul des Ratios ####
+    
+    if(is.null(Ratio) == F & Type == "Pollen"){
+      print("Ratio calcul is beginning.")
+      MP_cal <- data.frame(t(MP_lake), check.names = F)
+      MR <- MP_cal[0]
+      for(i in 1:length(TabRa)){
+        TaxonDeno <- c(as.character(unique(TabRa[[i]]$Deno)))
+        ColDeno <- subset(MP_cal, select = TaxonDeno)
+        TaxonNomi <- c(as.character(unique(TabRa[[i]]$Nomi)))
+        ColNomi <- subset(MP_cal, select = TaxonNomi)
+        MR[i] <- rowSums(ColDeno)/rowSums(ColNomi)
+        InitLDeno <- paste(substring(TaxonDeno, 1, 2), collapse = "+")
+        InitLNomi <- paste(substring(TaxonNomi, 1, 2), collapse = "+")
+        colnames(MR)[i] <- paste(InitLDeno,InitLNomi,sep = "/")
+      }
+      MR <- MR[order(as.double(Age)),]
+    }
+    else{MR = NULL}
+    
+    #### Save to csv ####
+    if(is.null(Save.path) == F){
+      Path.to.create <- gsub("(.*/).*\\.csv.*","\\1",Save.path)
+      dir.create(file.path(Path.to.create), showWarnings = FALSE)
+      
+      if(is.null(MR) == F){
+        MR.save <- cbind(Age = t(Age[order(as.double(Age))]), MR)
+        Save.path.ratio <- gsub("\\.csv", "_Ratio.csv", Save.path)
+        Save.path.ratio.RDS <- gsub("\\.csv", "_Ratio.Rds", Save.path)
+        saveRDS(MR.save, Save.path.ratio.RDS)
+        write.table(MR.save, file=Save.path.ratio, row.names=T, col.names=NA, sep=",", dec = ".")
+      }
+      
+      if(Diversite.plot == T){
+        if(Pollen.diversity == T){
+          Save.path.div <- gsub("\\.csv", "_PolDiversity.csv", Save.path)
+          write.table(MatDiv, file=Save.path.div, row.names=T, col.names=NA, sep=",", dec = ".")}
+        if(Spore.diversity == T){
+          Save.path.div <- gsub("\\.csv", "_SporeDiversity.csv", Save.path)
+          write.table(MatDiv, file=Save.path.div, row.names=T, col.names=NA, sep=",", dec = ".")}
+      }
+      
+      if(CONISS == T & Calc.stat == T){
+        if(Type == "Pollen"){
+          Save.path.div <- gsub("\\.csv", "_statPol_CONISS.csv", Save.path)
+          write.table(Tab.stat, file=Save.path.div, row.names=T, col.names=NA, sep=",", dec = ".")}
+        if(Type == "Algue"){
+          Save.path.div <- gsub("\\.csv", "_statAlg_CONISS.csv", Save.path)
+          write.table(Tab.stat, file=Save.path.div, row.names=T, col.names=NA, sep=",", dec = ".")}
+        
+      }
+    }
+    
+    #### Export data ####
+    if(Type == "NPP" & Cortege == T){
+      Keep.taxa.lab <- c(row.names(MP_dom), row.names(Mcortege))
+      spec <- cbind(data.frame(t(MP_dom)), data.frame(t(Mcortege)))
+      names(spec) <- Keep.taxa.lab
+    }
+    else{
+      Keep.taxa.lab <- row.names(MP_dom)
+      spec <- data.frame(t(MP_dom))
+      names(spec) <- Keep.taxa.lab
+    }
+    
+    spec <- spec*100                            # On passe en pourcentage
+    spec <- spec[order(as.double(Age)),]
+    
+    if(!Plot.x %in% c(All.depths, All.ages)){Age <- MA_lake}
+    
+    full <- list(spec, Age, couleur, Clust_DP, MatDiv, MR, Tab.stat)  # export function
+    return(full)
+  }
+  
+  #### Distance entre graph + Legend en bas ####
+  if(Plot.algue == T & Plot.NPP == T & Pol.influx.total == T & Diversite.plot == T & is.null(Ratio) == T){
+    RPollen = LInf <- 0.5
+    RInf = LAlgue <- 0.52
+    RAlgue = LNPP <- 0.7
+    RNPP = LDiv <- 0.899
+    RDiv = .97
+    Legend.haut <- c("Climat", "Pollen", "Algae", "Fungal Spore")
+    Ajust.haut <- c(0, LAlgue/2, LAlgue, LNPP)
+    Legend.bas <- c("%TP", "%TP+NPP", "10^3.#grains.cm-3", "#Taxa")
+    Ajust.bas <- c(0, LAlgue, LNPP, LDiv)}
+  
+  if(Plot.algue == T & Plot.NPP == T & Pol.influx.total == T & Diversite.plot == T & is.null(Ratio) == F){
+    RPollen = LInf <- 0.42
+    RInf = LAlgue <- 0.45
+    RAlgue = LNPP <- 0.7
+    RNPP = LDiv <- 0.85
+    RDiv = LRatio <- 0.89
+    Legend.haut <- c("Climat", "Pollen", "Algae", "Fungal Spore")
+    Ajust.haut <- c(0, LAlgue/2, LAlgue, LNPP)
+    Legend.bas <- c("%TP", "%TP+NPP", "10^3.#grains.cm-3", "#Taxa")
+    Ajust.bas <- c(0, LAlgue, LNPP, LDiv)}
+  if(Plot.algue == T & Plot.NPP == T & Pol.influx.total == F & Diversite.plot == T & is.null(Ratio) == F){
+    RPollen = LInf <- 0.43
+    RInf = LAlgue <- 0.43
+    RAlgue = LNPP <- 0.65
+    RNPP = LDiv <- 0.85
+    RDiv = LRatio <- 0.89
+    Legend.bas <- c("%TP", expression(10^6 ~ "#grain." ~ cm^-3 ~ "& %TP+NPP"), expression("#grain." ~ cm^-3), "#Taxa", "Arbitrary Unit")
+    Legend.haut <- c("Climat", "Pollen", "Algae", "Fungal Spore", "Pollen Ratio")
+    Ajust.haut <- c(0, LAlgue/2, LAlgue, LNPP, LRatio)
+    Ajust.bas <- c(0, LAlgue, LNPP, LDiv, LRatio)}
+  if(Plot.algue == T & Plot.NPP == T & Pol.influx.total == F & Diversite.plot == T & is.null(Ratio) == T){
+    RPollen = LInf <- 0.47
+    RInf = LAlgue <- 0.47
+    RAlgue = LNPP <- 0.73
+    RNPP = LDiv <- 0.89
+    RDiv = LRatio <- 0.99
+    Legend.haut <- c("Climat", "Pollen", "Algae", "Fungal Spore")
+    Ajust.haut <- c(0, LAlgue/2, LAlgue, LNPP)
+    Legend.bas <- c("%TP", "%TP+NPP", "#grains.cm-3", "#Taxa")
+    Ajust.bas <- c(0, LAlgue, LNPP, LDiv)}
+  if(Plot.algue == T & Plot.NPP == T & Pol.influx.total == F & Diversite.plot == F & is.null(Ratio) == T){
+    RPollen = LInf <- 0.55
+    RInf = LAlgue <- 0.55
+    RAlgue = LNPP <- 0.8
+    RNPP = LDiv <- 0.99
+    RDiv = LRatio <- 0.99
+    Legend.bas <- c("%TP", "%TP+NPP", "#grain.cm-3")
+    Legend.haut <- c("Climat", "Pollen", "Algae", "Fungal Spore")
+    Ajust.haut <- c(0, LAlgue/2, LAlgue, LNPP)
+    Ajust.bas <- c(0, LAlgue, LNPP)} 
+  if(Plot.algue == T & Plot.NPP == F & Pol.influx.total == T & Diversite.plot == F & is.null(Ratio) == T){
+    RPollen = LInf <- 0.55
+    RInf = LAlgue <- 0.6
+    RAlgue = LNPP <- 0.8
+    RNPP = LDiv <- 0.99
+    RDiv = LRatio <- 0.99
+    Legend.bas <- c("%TP", "%TP+NPP", "#grain.cm-3")
+    Legend.haut <- c("Climat", "Pollen", "Algae", "Fungal Spore", "Pollen Ratio")
+    Ajust.haut <- c(0, LAlgue/2, LAlgue, LNPP, LRatio)
+    Ajust.bas <- c(0, LAlgue, LNPP)}
+  if(Plot.algue == F & Plot.NPP == F & Pol.influx.total == F & Diversite.plot == T & is.null(Ratio) == F){
+    RPollen = LInf <- 0.85
+    RInf = LAlgue <- 0.85
+    RAlgue = LNPP <- 0.85
+    RNPP = LDiv <- 0.85
+    RDiv = LRatio <- 0.89
+    Legend.bas <- c("%TP", "%TP+NPP", "#grain.cm-3")
+    Legend.haut <- c("Climat", "Pollen", "Pollen Ratio")
+    Ajust.haut <- c(0, LAlgue/2, LAlgue, LNPP, LRatio)
+    Ajust.bas <- c(0, LAlgue, LNPP)
+  }
+  if(Plot.algue == F & Plot.NPP == F & Pol.influx.total == F & Diversite.plot == T & is.null(Ratio) == T){
+    RPollen = LInf <- 0.89
+    RInf = LAlgue <- 0.8
+    RAlgue = LNPP <- 0.8
+    RNPP = LDiv <- 0.89
+    RDiv = LRatio <- 0.95
+    Legend.bas <- c("%TP")
+    Legend.haut <- c("Pollen", "CONISS")
+    Ajust.haut <- c(0, LRatio)
+    Ajust.bas <- c(0)
+  }
+  if(Plot.algue == F & Plot.NPP == F & Pol.influx.total == T & Diversite.plot == F & is.null(Ratio) == T){
+    RPollen = LInf <- 0.89
+    RInf = 0.99
+    Legend.bas <- c("%TP", "%TP+NPP", "#grain.cm-3")
+    Legend.haut <- c("Climat", "Pollen", "Pollen Ratio")
+  }
+  if(Plot.algue == F & Plot.NPP == F & Pol.influx.total == T & Diversite.plot == T & is.null(Ratio) == T){
+    RPollen = LInf <- 0.85
+    RInf = LDiv <- 0.89
+    RDiv = LRatio <- 0.95
+    Legend.bas <- c("%TP", "%TP+NPP", "#grain.cm-3")
+    Legend.haut <- c("Climat", "Pollen", "Pollen Ratio")
+  }
+  if(Plot.algue == F & Plot.NPP == F & Pol.influx.total == F & Diversite.plot == F & is.null(Ratio) == T){RPollen = LInf <- 1}
+  
+  #### Mono / double plot ####
+  Keep.all.x <- Plot.x
+  for(i in Keep.all.x){
+    Plot.x <- i 
+    #### Save plots ####
+    if(is.null(Save.plot) == F){
+      Path.to.create <- gsub("(.*/).*\\.pdf.*","\\1", Save.plot)
+      dir.create(file.path(Path.to.create), showWarnings = FALSE)
+      if(length(Keep.all.x) > 1){
+        print(paste("Plot du DP in", Plot.x))
+        Save.plot.i <- paste(gsub("\\.pdf", "", Save.plot), "_", Plot.x, ".pdf", sep = "")
+        }
+      else{Save.plot.i <- Save.plot}
+      
+      if(is.null(W) == F & is.null(H) == F){
+        pdf(file = Save.plot.i, width = W*0.01041666666667, height = H*0.01041666666667)}
+      else{pdf(file = Save.plot.i)}}
+    
+    #### Plot  ####
+    yo <- Prep.data(MP, Seuil.Pour, Only.keep = Keep.pollen, "Pollen", Calc.stat = T, Save.missing.tax = Save.missing.tax)
+    spec = yo[[1]]
+    Age = yo[[2]]
+    couleur = yo[[3]]
+    Clust_DP = yo[[4]]
+    Ratio = yo[[6]]
+    if(Diversite.plot == T | Plot.algue == T | Plot.NPP == T | Pol.influx.total == T){Clust_DP_plot = NULL}
+    else(Clust_DP_plot <- Clust_DP)
+    
+    #### Main plot graph settings ####
+    if(Auto.Pollen.lab == T & is.null(Pollen.lab) == T & is.null(Path.index) == F){
+      InfoPol  <- read.csv(file = Path.index, sep=",",dec=".", header = T, stringsAsFactors = F, row.names = 1, check.names = FALSE)
+      Pollen.lab <- InfoPol$Label[match(gsub("\\.", " ", names(spec)), InfoPol$Nom)]
+    }
+    
+    if(Plot.x %in% All.ages){
+      if(is.null(Time.window) == T){Time.window <- 250}
+      My_ticks <- seq(-50,round(max(Age),digits=-2),Time.window)
+      My_y_lab <- "Time (yr cal BP)"
+    }
+    if(Plot.x %in% All.depths){
+      if(is.null(Time.window) == T){Time.window <- 10}
+      My_ticks <- seq(round(min(Age),digits=-1),round(max(Age),digits=-1),Time.window)
+      My_y_lab <- "Depth (cm)"
+    }
+    if(!Plot.x %in% c(All.depths, All.ages)){
+      My_ticks <- seq(1:length(Age))
+      My_y_lab <- "Sample ordination (#)"
+    }
+    
+    #### Age Zone ####
+    Display.age.rioja = F
+    Lab.rect.x1 = -0.03
+    Lab.rect.x2 = -0.04
+    par(mar=c(2.3, #bottom
+              3, #left 0 parfait pour plus tard
+              9.92, #top
+              0)) # rigth
+    
+    p2 <- plot(10,0,
+               bty = "n",
+               ylab = My_y_lab,
+               xlab = "",
+               ylim = c(max(Age, na.rm = T),min(Age, na.rm = T)), yaxt = "n",
+               xlim = c(0,1), xaxt = "n",
+               yaxp = c(round(max(Age, na.rm = T),digits=-2),
+                        round(min(Age, na.rm = T),digits=-2), 20)
+    )
+    
+    Zone.age = T
+    if(nrow(Rect.zone) > 1 & is.null(Rect.zone$Temp.col) == F){
+      if(is.null(nlake) == F){
+        title(main = paste("Pollen diagram of", nlake, "Lake"), line = 7, cex.main = 2.7, font.main = 1, adj = 0)
+        My_lake_name <- paste("Pollen diagram of", nlake, "Lake")
+      }
+      else{My_lake_name <- NULL}
+      
+      axis(2, at = seq(-50,round(max(Age),digits=-2),Time.window), las = 1, cex.axis = 0.8)
+      
+      for(z in 1:nrow(Rect.zone)){
+        rect(xleft = Lab.rect.x1, xright = 1, ybottom = Rect.zone[z,1], ytop = Rect.zone[z,2], col = Rect.zone[z,3], lty = 3)
+        rect(xleft = Lab.rect.x1, xright = Lab.rect.x2, ybottom = Rect.zone[z,1], ytop = Rect.zone[z,2], col = Rect.zone[z,5],)
+        text((Lab.rect.x1+Lab.rect.x2)/2, (Rect.zone[z,1] + Rect.zone[z,2])/2, font = 2,
+             labels = Rect.zone[z,4], col = "white", srt = 90, cex = 1)
+      }
+      
+      mtext(side = 1, line = 1, text = Legend.bas, adj = Ajust.bas, cex = 1.4)
+      mtext(side = 3, line = 4.8, text = Legend.haut, adj = Ajust.haut, cex = 1.9)
+    }
+    else{
+      Display.age.rioja = T
+      if(is.null(nlake) == F){
+        My_lake_name <- paste("Pollen diagram of", nlake, "Lake")
+      }
+      else{My_lake_name <- NULL}
+    }
+    
+    #### Zone hiatus ####
+    if(is.null(Zone.hiatus) == F){
+      Rect.zone.hiatus = data.frame(xmin = Zone.hiatus[1], 
+                                    xmax = Zone.hiatus[2],
+                                    Temp.col = "grey30",
+                                    Title.zone = "Hiatus", 
+                                    Name.col = "grey30")
+      
+      rect(xleft = Lab.rect.x1, xright = 1, ybottom = Rect.zone.hiatus[1,1], ytop = Rect.zone.hiatus[1,2], col = Rect.zone.hiatus[1,3], lty = 3)
+      rect(xleft = Lab.rect.x1, xright = Lab.rect.x2, ybottom = Rect.zone.hiatus[1,1], ytop = Rect.zone.hiatus[1,2], col = Rect.zone.hiatus[1,5],)
+      text((Lab.rect.x1+Lab.rect.x2)/2, (Rect.zone.hiatus[1,1] + Rect.zone.hiatus[1,2])/2, font = 2,
+           labels = Rect.zone.hiatus[1,4], col = "white", srt = 90, cex = 1)}
+    
+    #### Order pollen columns ####
+    if(is.null(Keep.pollen) == F & is.null(Order.pollen) == T){
+      Match.OK <- Keep.pollen[which(Keep.pollen %in% names(spec))]
+      if(AP.NAP == T){Match.OK <- c("AP", "NAP", Match.OK)}
+      Add <- setdiff(names(spec), Match.OK)
+      Save.order <- match(Add, names(spec))
+      if(length(Add)>0){Match.OK <- c(Match.OK, Add)}
+      Order.pollen <- match(Match.OK, names(spec))
+    }
+    
+    if(is.null(Order.pollen) == F){
+      spec <- spec[Order.pollen]
+      couleur <- couleur[Order.pollen]
+      if(is.null(Pollen.lab) == F){Pollen.lab <- Pollen.lab[Order.pollen]}
+    }
+    
+    #### Plot POLLEN % ####
+    p <- strat.plot(spec, yvar = as.double(Age), 
+                    y.rev = TRUE, 
+                    scale.percent = TRUE,     # True pour des pourcentages
+                    srt.xlabel = 45,           # Rotation de 45 des noms de taxon
+                    title = My_lake_name,
+                    ylabel = My_y_lab,
+                    y.tks = My_ticks,
+                    xSpace = 0.003,
+                    y.axis = Display.age.rioja,
+                    x.names = Pollen.lab,
+                    mgp = c(0, 0.5, 0.3),
+                    add = T,
+                    plot.poly     = TRUE,
+                    plot.bar      = TRUE,
+                    plot.line     = TRUE,
+                    lwd.bar       = 1,
+                    lwd.poly      = 1,
+                    col.poly      = couleur,         # bleu clair
+                    #col.bar       = "#a2dbe1ff",         # Fait apparaitre les traits continus
+                    col.poly.line = "#8c92a1ff",         # gris fonce
+                    exag=TRUE,                # Fait apparaitre la zone x10
+                    # exag=ex,   ici on peut mettre une exageration sur seulement les taxa minoritaires
+                    exag.alpha=0.30, exag.mult=2.5,
+                    col.exag="auto",           # Zone x10 couleur auto
+                    clust = Clust_DP_plot,
+                    clust.width=0.015, 
+                    #fun1=sm.fun                # application ou non du lissage
+                    xLeft = 0.03,
+                    xRight = RPollen
+    )
+    if(CONISS == TRUE & Nzone > 0){
+      addClustZone(p, Clust_DP, Nzone, lwd=1.8, lty=2, col="grey25")}
+    
+    #### Plot Ratio pollen ####
+    if(is.null(Ratio)==F){
+      Clust_DP_plot = Clust_DP
+      P.ratio <- strat.plot(Ratio, yvar = as.double(Age),
+                            y.rev = TRUE, 
+                            scale.percent = F,     # True pour des pourcentages
+                            srt.xlabel = 45,           # Rotation de 45 des noms de taxon
+                            #xlim = c(20,30),
+                            xSpace = 0.002,
+                            y.axis        = F,
+                            plot.poly     = T, 
+                            plot.bar      = F,
+                            plot.line     = T, 
+                            lwd.bar       = 1,
+                            mgp = c(0, 0.5, 0.3),
+                            col.poly      = "#E6E6C6",          # gris clair
+                            col.bar       = "#8c92a1ff",         # Fait apparaitre les traits continus
+                            col.poly.line = "#8c92a1ff",     # gris fonce
+                            exag = T,                # Fait apparaitre la zone x10
+                            col.exag="auto",           # Zone x10 couleur auto
+                            clust = Clust_DP_plot,
+                            exag.alpha=0.30, exag.mult=2.5,
+                            clust.width = 0.015, 
+                            #fun1=sm.fun                # application ou non du lissage
+                            xLeft = LRatio,
+                            xRight = 0.99,
+                            add = T
+      )
+      if(CONISS == TRUE & Nzone > 0){addClustZone(P.ratio , Clust_DP, Nzone, 
+                                                  lwd=1.5, lty=2, col="grey25")}}
+    #### Plot Algue Frac ####
+    if(is.null(Malg_frac) == F){
+      Mplot.alg <- Prep.data(Malg_frac, Seuil.Pour.alg, "Algue", Calc.stat = T, Only.keep = Keep.algue)
+      
+      if(Plot.NPP == T | Pol.influx.total == T){Clust_DP_plot = NULL}
+      else(Clust_DP_plot = Clust_DP)
+      
+      if(Auto.Pollen.lab == T & is.null(Path.index) == F){
+        InfoPol  <- read.csv(file = Path.index, sep=",",dec=".", header = T, stringsAsFactors = F, row.names = 1, check.names = FALSE)
+        Algue.lab <- InfoPol$Label[match(gsub("\\.", " ", names(Mplot.alg[[1]])), InfoPol$Nom)]
+      }
+      else{Algue.lab <- NULL}
+      Lab_algue_here <- Algue.lab 
+      
+      
+      MAlgClean <- Mplot.alg[[1]]
+      
+      if(is.null(Keep.algue) == F & is.null(Order.algues) == T){
+        Match.OK <- Keep.algue[which(Keep.algue %in% names(MAlgClean))]
+        Add <- setdiff(names(MAlgClean), Match.OK)
+        Save.order <- match(Add, names(MAlgClean))
+        if(length(Add)>0){Match.OK <- c(Match.OK, Add)}
+        Order.algues <- match(Match.OK, names(MAlgClean))
+      }
+      
+      if(is.null(Order.algues) == F){
+        MAlgClean <- MAlgClean[Order.algues]
+        Lab_algue_here <- Lab_algue_here[Order.algues]
+      }
+      
+      if(is.null(Malg_conc) == F & Al.Pol.influx == T){
+        Axis.x.pos <- c(0, 1.4, 1.7)}
+      else{Axis.x.pos <- NULL}
+      
+      p2 <- strat.plot(MAlgClean, yvar = as.double(Mplot.alg[[2]]), 
+                       y.rev         = T, 
+                       scale.percent = T,     # True pour des pourcentages
+                       srt.xlabel    = 45,           # Rotation de 45 des noms de taxon
+                       y.axis        = F,
+                       xSpace        = 0.005,
+                       x.names = Lab_algue_here,
+                       x.pc.lab      = T,
+                       x.axis = T,
+                       cex.axis = 0.6,   # taille police légende en bas
+                       #mgp = c(0, -0.7, -1), # position graduation en bas
+                       mgp = Axis.x.pos, # horizon / vertical chiffre / vertical graduation
+                       plot.poly     = T, 
+                       plot.bar      = T,
+                       plot.line     = T, 
+                       lwd.bar       = 1,
+                       col.poly      = "#a2dbe1ff",         # bleu clair
+                       col.bar       = "#8c92a1ff",         # Fait apparaitre les traits continus
+                       col.poly.line = "#8c92a1ff",         # gris fonce
+                       clust = Clust_DP_plot,
+                       clust.width=0.015, 
+                       xLeft         = LAlgue,
+                       xRight        = RAlgue,
+                       add           = T
+      )
+      if(CONISS == TRUE & Nzone > 0){addClustZone(p2, Clust_DP, Nzone, 
+                                                  lwd=1.5, lty=2, col="grey25")}
+      
+    }
+    
+    #### Plot Algue Conc. ####
+    if(is.null(Malg_conc) == F & Al.Pol.influx == T){
+      yo <- Prep.data(Malg_conc, Seuil.Conc.alg, "Algue", Only.keep = Keep.algue)
+      spec = yo[[1]]
+      Age = yo[[2]]
+      couleur = yo[[3]]
+      
+      if(Plot.NPP == T | Pol.influx.total == T & is.null(Malg_frac) == F){Clust_DP_plot = NULL}
+      else(Clust_DP_plot = Clust_DP)
+      
+      if(Auto.Pollen.lab == T & is.null(Path.index) == F){
+        InfoPol  <- read.csv(file = Path.index, sep=",",dec=".", header = T, stringsAsFactors = F, row.names = 1, check.names = FALSE)
+        Algue.lab <- InfoPol$Label[match(gsub("\\.", " ", names(Mplot.alg[[1]])), InfoPol$Nom)]
+      }
+      else{Algue.lab <- NULL}
+      
+      if(is.null(Malg_frac) == T){Lab_algue_here <- Algue.lab}
+      else{Lab_algue_here = ""}
+      
+      if(is.null(Order.algues) == F){
+        spec <- spec[Order.algues]
+        if(is.null(Malg_conc) == T & Al.Pol.influx == T){ab_algue_here <- Lab_algue_here[Order.algues]}
+      }  
+      
+      p2<- strat.plot(spec, yvar = as.double(Age), 
+                      y.rev = TRUE, 
+                      scale.percent = TRUE,     # True pour des pourcentages
+                      srt.xlabel    = 45,       # Rotation de 45 des noms de taxon
+                      y.axis        =FALSE,
+                      xSpace        = 0.005,
+                      x.pc.inc      = round(max(spec), digits = - 2)/4,
+                      mgp = c(0, 0.5, 0.3),
+                      plot.poly     = FALSE, 
+                      x.names = Lab_algue_here,
+                      plot.bar      = TRUE,
+                      plot.line     = FALSE, 
+                      lwd.bar       = 7,
+                      col.poly      = "#a2dbe1ff",     # bleu clair
+                      # col.bar       = couleur,         # Fait apparaitre les traits continus
+                      col.bar       = "#004266",         # Fait apparaitre les traits continus
+                      col.poly.line = "#8c92a1ff",     # gris fonce
+                      exag=FALSE,                # Fait apparaitre la zone x10
+                      col.exag="auto",           # Zone x10 couleur auto
+                      clust = Clust_DP_plot,
+                      clust.width=0.015, 
+                      xLeft = LAlgue,
+                      xRight = RAlgue,
+                      add = TRUE
+      )
+      if(CONISS == TRUE & Nzone > 0){addClustZone(p2, Clust_DP, Nzone, 
+                                                  lwd=1.5, lty=2, col="grey25")}}
+    #### Plot NPP Conc. ####
+    if(Plot.NPP == T){
+      yo <- Prep.data(NPP_lake, Seuil.NPP, "NPP", Only.keep = Keep.NPP)
+      spec = yo[[1]]
+      #spec = spec/100
+      Age = yo[[2]]
+      couleur = yo[[3]]
+      if(Spore.influx == T){spec["Spore Sum"] <- rowSums(spec)}
+      if(Pol.influx.total == T | Diversite.plot == T){Clust_DP_plot = NULL}
+      else(Clust_DP_plot = Clust_DP)
+      if(Auto.Pollen.lab == T & is.null(Path.index) == F){
+        InfoPol  <- read.csv(file = Path.index, sep=",",dec=".", header = T, stringsAsFactors = F, row.names = 1, check.names = FALSE)
+        row.names(spec) <- gsub(" ",".", row.names(spec))
+        InfoPol$Nom <- gsub(" ",".", InfoPol$Nom)
+        NPP.lab <- InfoPol$Label[match(gsub("\\.", " ", names(spec)), gsub("\\.", " ", InfoPol$Nom))]
+      }
+      else{NPP.lab <- NULL}
+      
+      if(is.null(Keep.NPP) == F & is.null(Order.fungal) == T){
+        Match.OK <- Keep.NPP[which(Keep.NPP %in% names(spec))]
+        Add <- setdiff(names(spec), Match.OK)
+        Save.order <- match(Add, names(spec))
+        if(length(Add)>0){Match.OK <- c(Match.OK, Add)}
+        Order.fungal <- match(Match.OK, names(spec))
+      }
+      
+      if(is.null(Order.fungal) == F){
+        spec <- spec[Order.fungal]
+        NPP.lab <- NPP.lab[Order.fungal]
+        couleur <- couleur[Order.fungal]
+      }
+      
+      spec <- spec/10^3
+      p3 <- strat.plot(spec, yvar = as.double(Age), 
+                       y.rev         = TRUE, 
+                       scale.percent = TRUE,     # True pour des pourcentages
+                       srt.xlabel    = 45,           # Rotation de 45 des noms de taxon
+                       y.axis        = FALSE,
+                       xSpace        = 0.005, x.names = NPP.lab,
+                       # x.pc.inc      = round(max(spec, na.rm = T), digits = - 2)/2,
+                       x.pc.inc      = round(max(spec, na.rm = T), digits = - 2)/4,
+                       mgp = c(0, 0.5, 0.3),
+                       plot.poly     = FALSE, 
+                       plot.bar      = TRUE,
+                       plot.line     = FALSE, 
+                       lwd.bar       = 7,
+                       col.bar       = couleur,         # Fait apparaitre les traits continus
+                       exag          = FALSE,                # Fait apparaitre la zone x10
+                       col.exag      = "auto",           # Zone x10 couleur auto
+                       clust         = Clust_DP_plot,
+                       clust.width   = 0.015, 
+                       xLeft         = LNPP,
+                       xRight        = RNPP,
+                       add           = TRUE
+      )
+      if(CONISS == TRUE & Nzone > 0){addClustZone(p3, Clust_DP, Nzone, 
+                                                  lwd=1.5, lty=2, col="grey25")}}
+    
+    #### Plot Pollen inf. ####
+    if(Pol.influx.total == T){
+      if(is.null(Mpol_conc) == TRUE ){print("Calcul de l'influx pollinique impossible. Données manquantes.")}
+      else{
+        yo <- Prep.data(Mpol_conc, Seuil.Conc.alg, "Pollen")
+        spec = yo[[1]]
+        spec[["Pollen.tot.influx"]] <- rowSums(spec)/1000
+        Age = yo[[2]]
+        couleur = yo[[3]]
+        
+        if(Diversite.plot == T | Plot.algue == T | Plot.NPP == T ){Clust_DP_plot <-  NULL}
+        else(Clust_DP_plot <- Clust_DP)
+        P.inf <- strat.plot(spec$Pollen.tot.influx, yvar = as.double(Age), 
+                            y.rev = TRUE, 
+                            scale.percent = TRUE,     # True pour des pourcentages
+                            srt.xlabel = 45,           # Rotation de 45 des noms de taxon
+                            x.names = "Pollen Influx (#.10^3)",
+                            y.axis=FALSE,
+                            x.pc.inc      = round(max(spec$Pollen.tot.influx), digits = - 2)/2,
+                            xSpace = 0.003,
+                            mgp = c(0, 0.5, 0.3),
+                            plot.poly     = FALSE, 
+                            plot.bar      = TRUE,
+                            plot.line     = FALSE, 
+                            lwd.bar       = 7,
+                            # col.poly      = "#a2dbe1ff",         # bleu clair
+                            col.poly      = "#E6E6C6",          # gris clair
+                            col.bar      = "#C67F05",          # gris clair
+                            # col.bar       = couleur,         # Fait apparaitre les traits continus
+                            col.poly.line = "#8c92a1ff",         # gris fonce
+                            exag=FALSE,                # Fait apparaitre la zone x10
+                            col.exag="auto",           # Zone x10 couleur auto
+                            clust = Clust_DP_plot,
+                            clust.width=0.015,
+                            xLeft = LInf,
+                            xRight = RInf,
+                            add = TRUE
+        )
+        if(CONISS == TRUE & Nzone > 0){addClustZone(P.inf, Clust_DP, Nzone, 
+                                                    lwd=1.5, lty=2, col="grey25")}}}
+    
+    #### Plot Diversity ####
+    if(Diversite.plot == TRUE){
+      MatDiv = spec[0]
+      if(Pollen.diversity == T){
+        yoPOL <- Prep.data(MP, Seuil.Pour, "Pollen")
+        yoPOL <- data.frame(t(yoPOL[[5]]))
+        yoPOL <- yoPOL[names(Age),]
+        MatDiv["Pollen Diversity"] = yoPOL}
+      
+      if(Spore.diversity == T & Plot.NPP == T){
+        YoNPP <- Prep.data(NPP_lake, Seuil.NPP)
+        YoNPP <- data.frame(t(YoNPP[[5]]))
+        YoNPP <- YoNPP[names(Age),]
+        MatDiv["Spore Diversity"] = YoNPP}
+      
+      if(is.null(Ratio) == F){Clust_DP_plot = NULL}
+      else{Clust_DP_plot = Clust_DP}
+      
+      pmat <- strat.plot(MatDiv, yvar = as.double(Age),
+                         y.rev = TRUE, 
+                         scale.percent = T,     # True pour des pourcentages
+                         srt.xlabel = 45,           # Rotation de 45 des noms de taxon
+                         #xlim = c(20,30),
+                         xSpace = 0.003,
+                         mgp = c(0, 0.5, 0.3),
+                         y.axis        = F,
+                         plot.poly     = T, 
+                         plot.bar      = T,
+                         plot.line     = T, 
+                         lwd.bar       = 1,
+                         col.poly      = "lightgrey",          # gris clair
+                         col.bar       = "#8c92a1ff",         # Fait apparaitre les traits continus
+                         col.poly.line = "#8c92a1ff",     # gris fonce
+                         exag = F,                # Fait apparaitre la zone x10
+                         col.exag = "auto",           # Zone x10 couleur auto
+                         clust = Clust_DP_plot,
+                         clust.width = 0.015, 
+                         xLeft = LDiv,
+                         xRight = RDiv,
+                         add = T
+      )
+      if(CONISS == TRUE & Nzone > 0){addClustZone(pmat, Clust_DP, Nzone, 
+                                                  lwd=1.5, lty=2, col="grey25")}
+    }
+    
+    #### RETURN ####
+    if(is.null(Save.plot) == F){dev.off()}
+  }
+  return(yo)
+}
+
+Plot.HYDE <- function(Extract, Models = c("baseline", "upper"), Limits = NULL, Log.scale = F, Facet_plots = F, 
+                      Leg.pos = c(0.8,0.5),
+                      Save.plot.RDS = NULL, X.lab.size = 8, Time.window = 500, Save.plot = NULL, W = 400, H = 400){
+  #### Plot by country ####
+  Extract.m <- melt(Extract, id = c("Age", names(Extract)[grep(paste(Models[[2]], "lower", sep = "|"), names(Extract))]))
+  names(Extract.m)[names(Extract.m) == "variable"] <- "Mean"
+  names(Extract.m)[names(Extract.m) == "value"] <- "Mean_value"
+  
+  Extract.m <- melt(Extract.m, id = c("Age",  "Mean", "Mean_value", names(Extract.m)[grep(Models[[2]], names(Extract.m))]))
+  names(Extract.m)[names(Extract.m) == "variable"] <- "Low"
+  names(Extract.m)[names(Extract.m) == "value"] <- "Low_value"
+  
+  Extract.m <- melt(Extract.m, id = c("Age", "Mean", "Mean_value", "Low", "Low_value"))
+  Extract.m$color_mean <- gsub("_", "", gsub(paste(Models, collapse = "|"), "", Extract.m$Mean))
+  Extract.m$color_up <- gsub("_", "", gsub(paste(c(Models, "lower"), collapse = "|"), "", Extract.m$variable))
+  Extract.m$color_low <- gsub("_", "", gsub(paste(c(Models, "lower"), collapse = "|"), "", Extract.m$Low))
+  
+  Extract.m <- Extract.m[Extract.m$color_mean == Extract.m$color_low,]
+  Extract.m <- Extract.m[Extract.m$color_mean == Extract.m$color_up,]
+  Extract.m$facet <- ifelse(grepl("pop", Extract.m$color_mean), "Population counts", "Landscape uses (HYDE 3.2)")
+  
+  #### Param settings ####
+  if(is.null(Limits) == T){Limits <- c(min(Extract.m$Age, na.rm = T), max(Extract.m$Age, na.rm = T))}
+  
+  if(Log.scale == T){
+    To.log <- scale_x_log10()
+    Xlabs <- xlab(expression(log(Surface)~(km^2)))}
+  if(Log.scale == F){
+    To.log <- NULL
+    Xlabs <- xlab(expression(Surface~(km^2)))}
+  
+  My_color = c("cropland" = "#706432", "grazing" = "#7DA75E", "popc" = "darkred", "pasture" = "#1462BB")
+  My_labs = c("cropland" = "Croplands", "grazing" = "Rangelands", "popc" = "Population counts")
+  
+  if(Facet_plots == T){My_facet <- facet_wrap(vars(facet), scale = "free_x")}
+  if(Facet_plots == F){My_facet <- NULL}
+  
+  #### Plot ####
+  Ptot <- ggplot(data = Extract.m, mapping = aes(y = Age, x = Mean_value, colour = color_mean))+ 
+    geom_point()+ geom_line(orientation = "y")+ ylab("Age (yr cal BP)")+ Xlabs +
+    My_facet +
+    geom_colh(width = 25, color = NA, fill = NA, na.rm = T) +
+    
+    geom_ribbon(inherit.aes = F, mapping = aes(y = Age, xmin = value, xmax = Low_value, fill = color_mean), linetype = "dashed", alpha = .2)+
+    scale_color_manual(values = My_color, labels = My_labs, name = "Human impact\n(HYDE 3.2)")+
+    scale_fill_manual(values = My_color, labels = My_labs, name = "Human impact\n(HYDE 3.2)")+
+    scale_y_reverse(limits = c(Limits[2], Limits[1]), breaks = seq(Limits[1], Limits[2], Time.window)) + To.log +
+    theme(plot.background = element_blank(), panel.background = element_rect(fill = NA, colour = "grey30"),
+          panel.grid = element_blank(), 
+          axis.text.x = element_text(size = X.lab.size, angle = 45, hjust = 1, vjust = 1),
+          axis.ticks.x = element_line(lineend = "butt", color = "grey70", linewidth = .1),
+          
+          legend.frame = element_blank(), legend.box = element_blank(), legend.background = element_blank(), 
+          legend.key = element_blank(), legend.position = Leg.pos)
+  
+  #### Export ####
+  if(is.null(Save.plot) == F){
+    if(is.null(W) == F & is.null(H) == F){ggsave(Ptot, file = Save.plot, width = W*0.026458333, height = H*0.026458333, units = "cm")}
+    else{ggsave(Save.plot)}}
+  
+  if(is.null(Save.plot.RDS) == F){saveRDS(Ptot, Save.plot.RDS)}
+  return(Ptot)
+}
+
+CWT.calculation <- function(MT, MP, Mclim = NULL, MPS.ACA.Biom = NULL, Accep.seuil, Remove.biom, Add.CWV = F){
+  #### Settings ####
+  if(missing(Remove.biom)){Remove.biom = NULL}
+  
+  #### Clean matrix ####
+  if(any(colSums(MP) < 95)){
+    print("Recalculate the FA for the species matrix.")
+    Keep.real.names <- row.names(MP)
+    MP <- data.frame(t(MP))
+    MP <- MP/rowSums(MP)*100
+    MP <- data.frame(t(MP))
+    row.names(MP) <- Keep.real.names
+  }
+  
+  MP$id <- row.names(MP)
+  names(MT) <- gsub("X", "", names(MT))
+  if(any(grepl("TRY", names(MT)) == T) == F){names(MT) <- paste("TRY", names(MT), sep = "_")}
+  names(MT)[1] <- "id"
+  MT <- MT[which(MT$id %in% MP$id),]
+  # /!\ missing taxa ! 
+  Missing.taxa <- setdiff(MP$id, MT$id)
+  if(length(Missing.taxa) > 0){
+    print("The following taxa are missing from the trait matrix:")
+    print(Missing.taxa)
+  }
+  
+  Missing.raw <- MT[setdiff(MP$id, MT$id),]
+  Missing.raw$id <- setdiff(MP$id, MT$id)
+  MT <- rbind(MT, Missing.raw)
+  MT <- as_tibble(lapply(MT, function(x){x[is.nan(x)] <- NA ; x}))
+  
+  #### Merge MP + MT ####
+  MPT <- merge(MT, MP, by = "id", all = T)
+  MPT <- melt(MPT, id = names(MT))
+  names(MPT)[names(MPT) == "variable"] <- "Site"
+  names(MPT)[names(MPT) == "value"] <- "FA"
+  
+  #### Calculation of the CWT ####
+  MCWT <- data.frame(Site = (unique(MPT["Site"])))
+  MCWT.stat <- setNames(data.frame(NA,NA,NA), c("Trait", "Pour.sites.kept", "N.site"))
+  MCWT.stat <- MCWT.stat[-1,]
+  Tot.site.nb <- length(levels(MPT$Site))
+  
+  if(Add.CWV == T){MCWV <- MCWT; MCWV.stat = MCWT.stat}
+  
+  #### Main loop ####
+  for(i in grep("TRY", names(MPT))){
+    Trait.treat.i <- names(MPT)[i]
+    A <- MPT[c("id", Trait.treat.i, "Site", "FA")]
+    A$FA[is.na(A[[Trait.treat.i]])] <- NA
+    if(all(is.na(A$FA)) == T){next}
+    all_abund = aggregate(FA ~ Site, A, sum)
+    colnames(all_abund)[2] = "tot_abund"
+    Keep.sites <- all_abund[all_abund[2] > Accep.seuil,]
+    
+    #### Calculation CWM ####
+    if(nrow(Keep.sites) > 0){
+      N.site <- length(Keep.sites$tot_abund)
+      Pourc.site.up.seuil <- round(length(Keep.sites$tot_abund)/Tot.site.nb, digits = 2)
+      MCWT.stat[i,] <- c(Trait.treat.i, Pourc.site.up.seuil, N.site)
+      A <- A[which(A$Site %in% Keep.sites$Site),]
+      A <- merge(A, all_abund, by = "Site")
+      # A$FA <- scale(A$FA/A$tot_abund)
+      A$FA <- A$FA/A$tot_abund
+      XX <- aggregate(FA * eval(parse(text = Trait.treat.i)) ~ Site, A, sum, na.rm = T)
+    }
+    else{
+      XX <- data.frame(Site = NA, X = "")
+    }
+    names(XX)[2] <- Trait.treat.i
+    MCWT <- left_join(MCWT, XX, by = "Site")
+    
+    
+    #### Add CWV ####
+    if(Add.CWV == T){
+      if(nrow(Keep.sites) > 0){
+        
+        A.var <- full_join(A, setNames(XX, c("Site", "CWM")), by = "Site")
+        A.var$T.var <- (A.var[[names(A.var)[grep("TRY_", names(A.var))]]] - A.var$CWM)^2
+        XX.var <- aggregate(FA * T.var ~ Site, A.var, sum, na.rm = T)
+      }
+      else{
+        XX.var <- data.frame(Site = NA, X = "")
+      }
+      names(XX.var)[2] <- Trait.treat.i
+      MCWV <- left_join(MCWV, XX.var, by = "Site")
+    }
+    
+  }
+  
+  MCWT.stat <- MCWT.stat[-1,]
+  MCWT.stat[nrow(MCWT.stat)+1,] <- c("Average", round(mean(as.numeric(MCWT.stat$Pour.sites.kept)), digits = 2), round(mean(as.numeric(MCWT.stat$N.site)), digits = 0))
+  
+  #### Merge CWT + climat ####
+  if(is.null(Mclim) == F){
+    Mclim[["Site"]] <- row.names(Mclim)
+    MCWT.clim = merge(MCWT, Mclim, by = "Site")    # On fusionne les matrices CWM et CLIMAT
+    if(Add.CWV == T){MCWV.clim = merge(MCWV, Mclim, by = "Site")}
+    
+    if(is.null(MPS.ACA.Biom) == F){
+      MPS.ACA.Biom[["Site"]] <- row.names(MPS.ACA.Biom)
+      MCWT.clim = merge(MCWT.clim, MPS.ACA.Biom, by = intersect(names(MCWT.clim), names(MPS.ACA.Biom)))    # On fusionne les matrices CWM et CLIMAT
+      if(Add.CWV == T){MCWV.clim = merge(MCWV.clim, MPS.ACA.Biom, by = intersect(names(MCWV.clim), names(MPS.ACA.Biom)))}
+    }
+    if(is.null(Remove.biom) == F){
+      MCWT.clim <- MCWT.clim[setdiff(seq(1,nrow(MCWT.clim)), which(MCWT.clim$Biome %in% Remove.biom)),]
+      if(Add.CWV == T){MCWV.clim <- MCWV.clim[setdiff(seq(1,nrow(MCWV.clim)), which(MCWV.clim$Biome %in% Remove.biom)),]}
+    }
+  }
+  
+  #### Export ####
+  if(Add.CWV == F){
+    if(is.null(Mclim) == F){
+      Lexport <- list(MCWT = MCWT.clim, MCWT.stat = MCWT.stat, Missing.taxon = Missing.taxa)
+      if(is.null(Mclim) == T){
+        Lexport <- list(MCWT = MCWT, MCWT.stat = MCWT.stat, Missing.taxon = Missing.taxa)}
+    }}
+  else{
+    if(is.null(Mclim) == F){
+      Lexport <- list(MCWT = MCWT.clim, MCWV = MCWV.clim, MCWT.stat = MCWT.stat, Missing.taxon = Missing.taxa)
+      if(is.null(Mclim) == T){
+        Lexport <- list(MCWT = MCWT, MCWV = MCWV, MCWT.stat = MCWT.stat, Missing.taxon = Missing.taxa)}
+      
+    }}
+  return(Lexport)
+}

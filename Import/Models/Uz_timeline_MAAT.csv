@@ -1,0 +1,19 @@
+Lab	Type	Carac	Carac_lab	Span	Start	End	Vjust	Seg_size	Lab_ang	Hjust
+BMAC	1,3	Urban	Urban	Period	4250	3650	1,9	2	0	0,5
+Andronovo	1,75	Nomad	Nomad	Period	3950	2950	-0,9	2	0	0
+Late Holocene	3,5	Warm	nul	Period	4850	-100	0,5	6	0	0,5
+Chalcolithic	1,3	Urban	Urban	Period	6450	4950	1,9	2	0	0,5
+Early Holoc.	3,5	Warm	nul	Period	11700	8050	0,5	6	0	0,5
+Mid Holoc.	3,5	Wet	nul	Period	8000	4900	0,5	6	0	0,5
+LIA	4,5	Cold	Cold	Period	550	50	-0,75	2	35	0
+WMP	4,5	Warm	Warm	Period	950	650	-0,75	2	35	0
+DACP	4,5	Cold	Cold	Period	1350	1650	-0,75	2	35	0
+RWP	4,5	Warm	Warm	Period	1900	2500	-0,75	2	35	0
+CWP	5	Warm	Warm	Event	50	NA	1,9	NA	0	0
+Sogdians	1,3	Urban	Urban	Period	1450	950	1,9	2	0	0,5
+Neolithization	1,3	Urban	Urban	Period	8950	6950	1,9	2	0	0,5
+Saka	1,75	Nomad	Nomad	Period	2550	2150	-0,9	2	0	1
+4.2 ky	5	Cold	Cold	Event	4200	NA	1,6	NA	0	0
+8.2 ky	5	Cold	Cold	Event	8200	NA	-0,9	NA	0	0
+Yaz I	1,3	Urban	Urban	Period	3450	2280	1,9	2	0	0,5
+Akhe./Hell.	1,3	Urban	Urban	Period	1900	2200	1,9	2	0	0,5
