@@ -1,16 +1,45 @@
 # Lake Fazilman Holocene climate, vegetation and human impact reconstructions
 
 ## Overview
-This repository contains the R code and data for the study:
-
-**"Mid-Holocene wet optimum and Early-Late Holocene arid phases shaped steppe-forest vegetation and human societies of Uzbekistan: multi-proxy evidences from Lake Fazilman."**  
+This GitHub project is associated to the publication of "*Mid-Holocene wet optimum and Early-Late Holocene arid phases shaped steppe-forest vegetation and human societies of Uzbekistan: multi-proxy evidences from Lake Fazilman.*" published in *CATENA* in 2026 (Dugerdil et al., 2026b).
 Published in *CATENA*.
 
-Author: **Lucas Dugerdil**  
-Affiliations:  
-1. Univ. Lyon, ENS de Lyon, Université Lyon 1, CNRS, UMR 5276 LGL-TPE, F-69364, Lyon, France  
-2. Université de Montpellier, CNRS, IRD, EPHE, UMR 5554 ISEM, Montpellier, France  
-ORCID: [0000-0003-0266-564X](https://orcid.org/0000-0003-0266-564X)  
+**Author**: **Lucas Dugerdil**<sup>1,2</sup>
+
+**Affiliations**:
+1. Univ. Lyon, ENS de Lyon, Université Lyon 1, CNRS, UMR 5276 LGL-TPE, F-69364, Lyon, France
+2. Université de Montpellier, CNRS, IRD, EPHE, UMR 5554 ISEM, Montpellier, France
+
+**ORCID**: [0000-0003-0266-564X](https://orcid.org/0000-0003-0266-564X)
+
+**Funding**: ANR, Grant [ANR‐22‐CE27‐0018](https://anr.fr/Project-ANR-22-CE27-0018) (STEPABILITY), Sébastien Joannin
+
+**Open Access**:
+
+<table width="100%">
+  <tr>
+    <td width="33.33%" align="left" valign="middle"><strong>Research article</strong></td>
+    <td width="33.33%" align="left" valign="middle"><strong>Published release</strong></td>
+    <td width="33.33%" align="left" valign="middle"><strong>Data repository</strong></td>
+  </tr>
+  <tr>
+    <td width="33.33%" align="left" valign="middle">
+
+[![Static Badge](https://img.shields.io/badge/DOI-10.1016%2Fj.catena.2025.109759-yellow)](https://doi.org/10.1016/j.catena.2025.109759)
+
+</td>
+    <td width="33.33%" align="left" valign="middle">
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17381815.svg)](https://doi.org/10.5281/zenodo.17381815)
+
+</td>
+    <td width="33.33%" align="left" valign="middle">
+
+[![Static Badge](https://img.shields.io/badge/DOI-10.15942%FPANGAEA.987394-green)](https://doi.org/10.1594/PANGAEA.987394)
+
+</td>
+  </tr>
+</table>
 
 ## Description
 This R script permits the reproducibility of all data analyses, quantitative reconstructions, and statistical approaches applied on the sediment core retrieved from Lake Fazilman, Nuratau range, Uzbekistan. From the raw data (X-ray fluorescence, magnetic susceptibility, spectrocolorimetry, pollen, non-pollen palynomorphs, lipid biomarkers), a full description of sediment properties, vegetation, watershed erosion, functional plant ecosystem structure, and climate reconstructions are provided.
