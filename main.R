@@ -1,4 +1,43 @@
-#### Intro #####
+#### Meta data ####
+# =============================================================================
+# Project: Lake Fazilman Holocene climate, vegetation and human impact reconstructions
+# Script: main.R
+#
+# Use:
+# Change the Boolean variables (e.g., Import = T) to import, reconstruct past environmental
+# variables and drow the figure related to the article (Dugerdil et al., 2026a)
+# 
+# Author: Lucas Dugerdil
+# ORCID: 0000-0003-0266-564X
+#
+# Affiliations:
+# 1) Univ. Lyon, ENS de Lyon, Université Lyon 1, CNRS, UMR 5276 LGL-TPE,
+#    F-69364, Lyon, France
+# 2) Université de Montpellier, CNRS, IRD, EPHE, UMR 5554 ISEM,
+#    Montpellier, France
+#
+# Description:
+# This script loads and cleans raw proxy data (XRF, magnetic susceptibility,
+# spectrocolorimetry, pollen, NPPs, lipid biomarkers) from the Lake Fazilman
+# sediment core to prepare datasets for subsequent analyses.
+#
+# Related publication:
+# Dugerdil, L. (2026). Mid-Holocene wet optimum and Early-Late Holocene arid
+# phases shaped steppe-forest vegetation and human societies of Uzbekistan:
+# multi-proxy evidences from Lake Fazilman. CATENA. https://doi.org/10.1016/j.catena.2025.109759
+#
+# License:
+# Creative Commons Attribution 4.0 International (CC BY 4.0)
+#
+# Citation:
+# If you use this code, please cite:
+# Lucas Dugerdil. (2025). LucasDugerdil/Paleo_Fazilman: v1.0.1 (v1.0.1). 
+# Zenodo. https://doi.org/10.5281/zenodo.17381815
+#
+# Created: 2025-08-01
+# Last modified: 2025-12-27
+# =============================================================================
+
 #### Import data ####
 Import = F
 if(Import == T){
